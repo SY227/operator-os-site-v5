@@ -1,0 +1,32 @@
+[
+  {
+    "id": "what-is-cognifox",
+    "question": "What is CogniFox focused on?",
+    "answer": "CogniFox focuses on practical AI workflow content: concrete blog posts, example agent projects, and use cases operators can actually apply.",
+    "sourceHref": "/"
+  },
+  {
+    "id": "openclaw-role",
+    "question": "What does OpenClaw do in these examples?",
+    "answer": "OpenClaw handles repeatable execution steps like triage, drafting, summaries, and workflow coordination, while humans keep final judgement on strategic or sensitive outputs.",
+    "sourceHref": "/projects"
+  },
+  {
+    "id": "where-to-start",
+    "question": "Where should I start if I’m new?",
+    "answer": "Start with the Blog for context, then review Agent Projects to see complete workflow breakdowns, and use Use Cases to match patterns to your own situation.",
+    "sourceHref": "/blog"
+  },
+  {
+    "id": "human-review-boundary",
+    "question": "How does human review fit in?",
+    "answer": "Each project and use case documents what OpenClaw automates and what still requires human review. The goal is controlled delegation, not unchecked autonomy.",
+    "sourceHref": "/use-cases"
+  },
+  {
+    "id": "chatbot-scope",
+    "question": "Can this chatbot answer anything?",
+    "answer": "No. This chatbot is intentionally content-grounded to CogniFox material. It is designed to answer questions about this site’s posts, projects, and use cases.",
+    "sourceHref": "/chatbot"
+  }
+]

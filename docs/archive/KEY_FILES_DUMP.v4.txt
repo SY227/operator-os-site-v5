@@ -1,0 +1,3478 @@
+Operator OS Site V2 - Key Files Dump
+Generated: 2026-03-15 23:31:51 PDT
+Project: /Users/sy1127/Desktop/operator-os-site-v2
+
+
+================================================================================
+FILE: README.md
+================================================================================
+# Operator OS Site V2
+
+A practical, Vercel-friendly Next.js App Router site designed for easy OpenClaw operation.
+
+## What changed in V2
+
+- Content moved into JSON files under `/content`
+- Real form APIs added:
+  - `POST /api/newsletter`
+  - `POST /api/contact`
+  - `POST /api/diagnostic`
+  - `POST /api/free-tool-request`
+- Lightweight lead routing abstraction (`src/lib/leads`)
+- Lightweight analytics abstraction (`src/lib/analytics`)
+- Deterministic file-driven ops diagnostic with scoring and tiered recommendations
+- Dynamic detail pages:
+  - `/products/[slug]`
+  - `/free-tools/[slug]`
+  - `/articles/[slug]`
+  - `/playbooks/[slug]`
+- Placeholder testimonial/legal structure replaced with production-safe starter structure
+
+---
+
+## Content files (safe for content-only edits)
+
+These are the primary files OpenClaw should edit for copy/content updates:
+
+- `content/site-config.json`
+- `content/products.json`
+- `content/free-tools.json`
+- `content/articles.json`
+- `content/playbooks.json`
+- `content/templates.json`
+- `content/testimonials.json`
+- `content/diagnostic-questions.json`
+
+### Editing guidance
+
+- Keep JSON valid (double quotes, no trailing commas)
+- Keep stable `slug` values once published
+- Update copy/data in JSON first before touching JSX
+
+---
+
+## Logic files (edit carefully)
+
+- API routes: `src/app/api/**/route.ts`
+- Lead routing: `src/lib/leads/**`
+- Analytics: `src/lib/analytics/**`
+- Content loading/types: `src/lib/content/**`
+- Diagnostic scoring: `src/lib/diagnostic.ts`
+- Page composition: `src/app/**/page.tsx`
+
+---
+
+## Local development
+
+```bash
+cd ~/Desktop/operator-os-site-v2
+npm install
+npm run dev
+```
+
+Open: `http://localhost:3000`
+
+### Production checks
+
+```bash
+npm run lint
+npm run build
+```
+
+---
+
+## Environment variables
+
+Copy `.env.example` to `.env.local` and configure as needed.
+
+Required only for persistent storage/providers:
+
+- `LEADS_PROVIDER` (`console|webhook|both`)
+- `LEADS_WEBHOOK_URL` (required if using webhook leads)
+- `ANALYTICS_PROVIDER` (`console|webhook|both`)
+- `ANALYTICS_WEBHOOK_URL` (required if using webhook analytics)
+- `ANALYTICS_CONSOLE_LOGS` (`true|false`)
+- `NEXT_PUBLIC_ANALYTICS_DEBUG` (`true|false`)
+
+If webhook vars are missing, forms still work and return success, but with warning that persistence is not configured.
+
+---
+
+## How to add content quickly
+
+### Add a new product
+1. Add a new object to `content/products.json` with a unique `slug`
+2. Include `primaryCta.label` + `primaryCta.href`
+3. Product auto-appears on listing and gets detail route at `/products/[slug]`
+
+### Add a new free tool
+1. Add object to `content/free-tools.json`
+2. Keep a unique `slug`
+3. Tool auto-appears and gets detail route at `/free-tools/[slug]`
+
+### Add a new article
+1. Add object to `content/articles.json`
+2. Include `body` array for detail page paragraphs
+3. Article auto-appears and gets detail route at `/articles/[slug]`
+
+---
+
+## Form testing (manual)
+
+1. Newsletter: submit from homepage/footer
+2. Contact: submit from `/contact`
+3. Diagnostic: complete `/get-started`
+4. Free tool request: open any `/free-tools/[slug]` (except ops-diagnostic) and submit
+
+Inspect:
+- Browser network tab responses
+- Terminal logs
+- Vercel Function logs (after deploy)
+
+---
+
+## Vercel deploy (recommended)
+
+### Option A: Vercel CLI
+
+```bash
+cd ~/Desktop/operator-os-site-v2
+npm i -g vercel
+vercel
+vercel --prod
+```
+
+### Option B: GitHub + Vercel dashboard
+
+1. Push repo to GitHub
+2. Import project in Vercel
+3. Framework: Next.js (auto-detected)
+4. Set environment variables from `.env.example`
+5. Deploy
+
+---
+
+## Tailwind resolve error note
+
+If you ever see errors like `resolve 'tailwindcss' in '/Users/.../Desktop'`, run commands from the project root:
+
+```bash
+cd ~/Desktop/operator-os-site-v2
+npm run dev
+```
+
+Do not run `next dev` from a parent directory.
+
+
+================================================================================
+FILE: OPERATIONS.md
+================================================================================
+# OPERATIONS.md
+
+Operational runbook for OpenClaw maintaining Operator OS Site V2.
+
+## 1) Recurring content update workflow
+
+Frequency: weekly
+
+1. Pull latest repo changes
+2. Edit only content JSON files under `/content` for normal content updates
+3. Validate JSON syntax
+4. Run:
+   - `npm run lint`
+   - `npm run build`
+5. Deploy to Vercel
+
+### OpenClaw safe-edit scope
+- ✅ Safe by default: `/content/*.json`, `README.md`, `OPERATIONS.md`
+- ⚠️ Requires caution: `src/app/**`, `src/lib/**`, API handlers
+
+---
+
+## 2) Recurring lead triage workflow
+
+Frequency: daily or every 2 days
+
+1. Check lead destination (webhook/CRM) for new records from types:
+   - newsletter
+   - contact
+   - diagnostic
+   - free-tool-request
+2. Prioritize contact + diagnostic leads first
+3. Follow up with:
+   - score/tier context from diagnostic submissions
+   - requested tool/product context from CTA and slug fields
+4. Track response SLA (target: <24h business day)
+
+---
+
+## 3) Recurring analytics review workflow
+
+Frequency: weekly
+
+Review key events:
+- `page_view`
+- `cta_click`
+- `newsletter_submit`
+- `contact_submit`
+- `diagnostic_start`
+- `diagnostic_complete`
+- `free_tool_request`
+- `product_cta_click`
+
+Check:
+1. Top pages by page view
+2. CTA click-through by section
+3. Diagnostic start-to-complete ratio
+4. Free tool request volume by `toolSlug`
+5. Product CTA engagement by `productSlug`
+
+---
+
+## 4) What OpenClaw should NOT edit without explicit request
+
+- Core lead/analytics provider contracts in `src/lib/leads/types.ts` and `src/lib/analytics/types.ts`
+- API response schemas in `src/app/api/**/route.ts`
+- Legal wording in `/privacy` and `/terms` beyond minor copy formatting unless requested
+- Tailwind/core layout architecture unless required for bug fixes
+
+
+================================================================================
+FILE: .env.example
+================================================================================
+# Lead routing
+# console | webhook | both
+LEADS_PROVIDER=console
+
+# Required when LEADS_PROVIDER=webhook or both
+LEADS_WEBHOOK_URL=
+
+# Analytics routing
+# console | webhook | both
+ANALYTICS_PROVIDER=console
+
+# Required when ANALYTICS_PROVIDER=webhook or both
+ANALYTICS_WEBHOOK_URL=
+
+# Server-side analytics console logging (helpful for Vercel logs)
+ANALYTICS_CONSOLE_LOGS=true
+
+# Client-side analytics debug logging in browser console
+NEXT_PUBLIC_ANALYTICS_DEBUG=false
+
+
+================================================================================
+FILE: package.json
+================================================================================
+{
+  "name": "operator-os-site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
+
+
+================================================================================
+FILE: tsconfig.json
+================================================================================
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": ["node_modules"]
+}
+
+
+================================================================================
+FILE: next.config.ts
+================================================================================
+import path from "node:path";
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
+};
+
+export default nextConfig;
+
+
+================================================================================
+FILE: postcss.config.mjs
+================================================================================
+const config = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+
+export default config;
+
+
+================================================================================
+FILE: src/app/globals.css
+================================================================================
+@import "../../node_modules/tailwindcss/index.css";
+
+:root {
+  --background: #f8fbf9;
+  --foreground: #123126;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+.card {
+  @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm;
+}
+
+
+================================================================================
+FILE: src/app/layout.tsx
+================================================================================
+import type { Metadata } from "next";
+import "./globals.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import AnalyticsPageView from "@/components/analytics/AnalyticsPageView";
+
+export const metadata: Metadata = {
+  title: "Operator OS | Plug-and-play systems for solo operators",
+  description:
+    "Save 5–10 hours a week with practical templates, workflows, and AI-assisted operating systems.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className="bg-white text-slate-900 antialiased">
+        <AnalyticsPageView />
+        <Header />
+        <main>{children}</main>
+        <Footer />
+      </body>
+    </html>
+  );
+}
+
+
+================================================================================
+FILE: src/app/page.tsx
+================================================================================
+import Section from "@/components/Section";
+import TrackedLink from "@/components/TrackedLink";
+import NewsletterForm from "@/components/forms/NewsletterForm";
+import {
+  getArticles,
+  getFreeTools,
+  getPlaybooks,
+  getProducts,
+  getSiteConfig,
+  getTestimonials,
+} from "@/lib/content";
+
+export default async function Home() {
+  const [siteConfig, freeTools, products, articles, playbooks, testimonials] =
+    await Promise.all([
+      getSiteConfig(),
+      getFreeTools(),
+      getProducts(),
+      getArticles(),
+      getPlaybooks(),
+      getTestimonials(),
+    ]);
+
+  const articleCategories = Array.from(new Set(articles.map((article) => article.category)));
+
+  return (
+    <>
+      <section className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-wide text-emerald-600">
+            AI Productivity Systems
+          </p>
+          <h1 className="mt-4 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+            {siteConfig.tagline}
+          </h1>
+          <p className="mt-5 text-lg text-slate-600">{siteConfig.description}</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <TrackedLink
+              href="/get-started"
+              className="rounded-lg bg-emerald-600 px-5 py-3 font-semibold text-white hover:bg-emerald-500"
+              eventPayload={{ placement: "home-hero" }}
+            >
+              Take the Ops Diagnostic
+            </TrackedLink>
+            <TrackedLink
+              href="/products"
+              className="rounded-lg border border-slate-300 px-5 py-3 font-semibold text-slate-800 hover:bg-slate-50"
+              eventPayload={{ placement: "home-hero" }}
+            >
+              Explore the Operator OS
+            </TrackedLink>
+          </div>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          {siteConfig.quickActions.map((action) => (
+            <div key={action} className="card p-4">
+              <p className="font-semibold text-slate-900">{action}</p>
+              <p className="mt-1 text-sm text-slate-600">
+                Practical workflow assets you can apply immediately.
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="border-y border-slate-200 bg-slate-50">
+        <div className="mx-auto grid max-w-7xl gap-3 px-4 py-5 text-center text-sm font-medium text-slate-700 sm:grid-cols-3 sm:px-6 lg:px-8">
+          {siteConfig.trustBar.map((item) => (
+            <p key={item}>{item}</p>
+          ))}
+        </div>
+      </section>
+
+      <Section title="The Proven Operator System" subtitle="A simple five-layer framework for repeatable execution.">
+        <div className="grid gap-4 md:grid-cols-5">
+          {siteConfig.systemLayers.map((layer, i) => (
+            <div key={layer.title} className="card">
+              <p className="text-sm font-semibold text-emerald-600">Layer {i + 1}</p>
+              <h3 className="mt-2 text-xl font-semibold">{layer.title}</h3>
+              <p className="mt-2 text-sm text-slate-600">{layer.description}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section
+        title="Find Out Where Your Workflow Is Breaking"
+        subtitle="Answer a few quick questions and get a personalized recommendation for systems and templates that fit your stage."
+      >
+        <div className="grid gap-6 rounded-2xl border border-emerald-100 bg-emerald-50 p-6 lg:grid-cols-2">
+          <div>
+            <h3 className="text-2xl font-semibold text-slate-900">Ops Diagnostic</h3>
+            <ul className="mt-4 space-y-2 text-slate-700">
+              <li>• 3-minute self-assessment</li>
+              <li>• Workflow maturity score</li>
+              <li>• Suggested starting product and free tool</li>
+              <li>• Next 7-day implementation plan</li>
+            </ul>
+            <TrackedLink
+              href="/get-started"
+              className="mt-6 inline-block rounded-lg bg-emerald-600 px-5 py-3 font-semibold text-white"
+              eventPayload={{ placement: "home-diagnostic" }}
+            >
+              Start Diagnostic
+            </TrackedLink>
+          </div>
+          <div className="card">
+            <p className="text-sm font-semibold text-slate-500">Assessment Preview</p>
+            <div className="mt-4 space-y-3 text-sm text-slate-700">
+              <p>1) How consistently do you run weekly planning?</p>
+              <p>2) How documented are recurring workflows?</p>
+              <p>3) Is task/project tracking centralized?</p>
+              <p>4) How often do you run review loops?</p>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      <Section title="Free Tools to Help You Operate Better">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {freeTools.map((tool) => (
+            <article key={tool.slug} className="card">
+              <h3 className="text-lg font-semibold">{tool.name}</h3>
+              <p className="mt-2 text-sm text-slate-600">{tool.description}</p>
+              <TrackedLink
+                href={tool.primaryCta.href}
+                className="mt-4 inline-block text-sm font-semibold text-emerald-600"
+                eventPayload={{ section: "home-free-tools", toolSlug: tool.slug }}
+              >
+                {tool.primaryCta.label} →
+              </TrackedLink>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Choose Your Operator OS Path" subtitle="A clear product ladder from quick wins to full implementation.">
+        <div className="grid gap-4 lg:grid-cols-4">
+          {products.map((product) => (
+            <article key={product.slug} className="card flex flex-col">
+              <h3 className="text-xl font-semibold">{product.name}</h3>
+              <p className="mt-2 text-sm text-slate-500">{product.audience}</p>
+              <p className="mt-3 text-sm text-slate-700">Outcome: {product.outcome}</p>
+              <ul className="mt-3 space-y-1 text-sm text-slate-600">
+                {product.includes.map((item) => (
+                  <li key={item}>• {item}</li>
+                ))}
+              </ul>
+              <TrackedLink
+                href={`/products/${product.slug}`}
+                className="mt-auto pt-4 text-sm font-semibold text-emerald-600"
+                eventName="product_cta_click"
+                eventPayload={{ productSlug: product.slug, placement: "home-products" }}
+              >
+                View details →
+              </TrackedLink>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Operator OS Content Hub" subtitle="Guides, systems, and practical operating patterns.">
+        <div className="mb-6 flex flex-wrap gap-2">
+          {articleCategories.map((category) => (
+            <span key={category} className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700">
+              {category}
+            </span>
+          ))}
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {articles.map((article) => (
+            <article key={article.slug} className="card">
+              <p className="text-xs font-semibold uppercase tracking-wide text-emerald-600">
+                {article.category}
+              </p>
+              <h3 className="mt-2 text-lg font-semibold">{article.title}</h3>
+              <p className="mt-2 text-sm text-slate-600">{article.excerpt}</p>
+              <TrackedLink
+                href={`/articles/${article.slug}`}
+                className="mt-3 inline-block text-sm font-semibold text-emerald-600"
+                eventPayload={{ articleSlug: article.slug, placement: "home-articles" }}
+              >
+                Read article →
+              </TrackedLink>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Playbooks" subtitle="Step-by-step implementation guides with one clear next action.">
+        <div className="grid gap-4 md:grid-cols-2">
+          {playbooks.map((playbook) => (
+            <article key={playbook.slug} className="card">
+              <h3 className="text-xl font-semibold">{playbook.title}</h3>
+              <p className="mt-2 text-sm text-slate-600">{playbook.description}</p>
+              <TrackedLink
+                href={`/playbooks/${playbook.slug}`}
+                className="mt-4 inline-block text-sm font-semibold text-emerald-600"
+                eventPayload={{ playbookSlug: playbook.slug, placement: "home-playbooks" }}
+              >
+                View Playbook →
+              </TrackedLink>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      <Section title={testimonials.title} subtitle={testimonials.subtitle}>
+        {testimonials.mode === "coming-soon" ? (
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="card border-dashed border-slate-300 bg-slate-50">
+              <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                Proof status
+              </p>
+              <p className="mt-2 text-slate-700">{testimonials.comingSoonMessage}</p>
+            </div>
+            {testimonials.founderNote && (
+              <div className="card">
+                <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
+                  {testimonials.founderNote.heading}
+                </p>
+                <p className="mt-2 text-slate-700">{testimonials.founderNote.body}</p>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-3">
+            {testimonials.items.map((item) => (
+              <blockquote key={`${item.name}-${item.quote}`} className="card text-slate-700">
+                <p>“{item.quote}”</p>
+                <footer className="mt-3 text-sm text-slate-500">
+                  {item.name}
+                  {item.role ? `, ${item.role}` : ""}
+                </footer>
+              </blockquote>
+            ))}
+          </div>
+        )}
+      </Section>
+
+      <section className="mx-auto mb-16 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="rounded-2xl bg-slate-900 p-8 text-white">
+          <h2 className="text-3xl font-bold tracking-tight">{siteConfig.newsletter.title}</h2>
+          <p className="mt-3 max-w-2xl text-slate-200">{siteConfig.newsletter.description}</p>
+          <NewsletterForm
+            className="mt-5 flex max-w-xl flex-col gap-3 sm:flex-row"
+            inputClassName="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-3"
+            buttonClassName="rounded-lg bg-emerald-500 px-5 py-3 font-semibold text-white hover:bg-emerald-400"
+            placeholder={siteConfig.newsletter.placeholder}
+            buttonLabel={siteConfig.newsletter.buttonLabel}
+          />
+        </div>
+      </section>
+    </>
+  );
+}
+
+
+================================================================================
+FILE: src/app/contact/page.tsx
+================================================================================
+import PageHero from "@/components/PageHero";
+import ContactForm from "@/components/forms/ContactForm";
+
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ intent?: string }>;
+}) {
+  const { intent } = await searchParams;
+
+  return (
+    <>
+      <PageHero title="Contact" subtitle="Questions, partnerships, or implementation support requests." />
+      <section className="mx-auto max-w-3xl px-4 pb-16 sm:px-6 lg:px-8">
+        <ContactForm initialTopic={intent ?? ""} />
+      </section>
+    </>
+  );
+}
+
+
+================================================================================
+FILE: src/app/get-started/page.tsx
+================================================================================
+import PageHero from "@/components/PageHero";
+import DiagnosticForm from "@/components/forms/DiagnosticForm";
+import { getDiagnosticConfig } from "@/lib/content";
+
+export default async function GetStartedPage() {
+  const diagnosticConfig = await getDiagnosticConfig();
+
+  return (
+    <>
+      <PageHero
+        title="Take the Ops Diagnostic"
+        subtitle="Get a practical recommendation based on your current workflow stage."
+      />
+      <section className="mx-auto max-w-4xl px-4 pb-16 sm:px-6 lg:px-8">
+        <DiagnosticForm questions={diagnosticConfig.questions} />
+      </section>
+    </>
+  );
+}
+
+
+================================================================================
+FILE: src/app/products/page.tsx
+================================================================================
+import PageHero from "@/components/PageHero";
+import TrackedLink from "@/components/TrackedLink";
+import { getProducts } from "@/lib/content";
+
+export default async function ProductsPage() {
+  const products = await getProducts();
+
+  return (
+    <>
+      <PageHero title="Products" subtitle="A product ladder designed for progressive implementation." />
+      <section className="mx-auto grid max-w-7xl gap-4 px-4 pb-16 sm:px-6 lg:grid-cols-2 lg:px-8">
+        {products.map((product) => (
+          <article key={product.slug} className="card">
+            <p className="text-xs font-semibold uppercase tracking-wide text-indigo-600">{product.priceLabel}</p>
+            <h2 className="mt-2 text-2xl font-semibold">{product.name}</h2>
+            <p className="mt-2 text-sm text-slate-500">{product.audience}</p>
+            <p className="mt-3 text-slate-700">{product.outcome}</p>
+            <ul className="mt-3 space-y-1 text-sm text-slate-600">
+              {product.includes.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
+            <TrackedLink
+              href={`/products/${product.slug}`}
+              className="mt-5 inline-block rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white"
+              eventName="product_cta_click"
+              eventPayload={{ productSlug: product.slug, placement: "products-page" }}
+            >
+              View Product Path
+            </TrackedLink>
+          </article>
+        ))}
+      </section>
+    </>
+  );
+}
+
+
+================================================================================
+FILE: src/app/free-tools/page.tsx
+================================================================================
+import PageHero from "@/components/PageHero";
+import TrackedLink from "@/components/TrackedLink";
+import { getFreeTools } from "@/lib/content";
+
+export default async function FreeToolsPage() {
+  const freeTools = await getFreeTools();
+
+  return (
+    <>
+      <PageHero
+        title="Free Tools"
+        subtitle="Start with practical assets you can apply immediately to your weekly workflow."
+      />
+      <section className="mx-auto grid max-w-7xl gap-4 px-4 pb-16 sm:grid-cols-2 sm:px-6 lg:grid-cols-3 lg:px-8">
+        {freeTools.map((tool) => (
+          <article key={tool.slug} className="card">
+            <h2 className="text-lg font-semibold">{tool.name}</h2>
+            <p className="mt-2 text-sm text-slate-600">{tool.description}</p>
+            <p className="mt-2 text-xs uppercase tracking-wide text-slate-500">Delivery: {tool.delivery}</p>
+            <TrackedLink
+              href={tool.slug === "ops-diagnostic" ? "/get-started" : `/free-tools/${tool.slug}`}
+              className="mt-4 inline-block rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white"
+              eventPayload={{ toolSlug: tool.slug, placement: "free-tools-page" }}
+            >
+              {tool.slug === "ops-diagnostic" ? "Take Diagnostic" : "Get Free Tool"}
+            </TrackedLink>
+          </article>
+        ))}
+      </section>
+    </>
+  );
+}
+
+
+================================================================================
+FILE: src/app/articles/page.tsx
+================================================================================
+import PageHero from "@/components/PageHero";
+import TrackedLink from "@/components/TrackedLink";
+import { getArticles } from "@/lib/content";
+
+export default async function ArticlesPage() {
+  const articles = await getArticles();
+
+  return (
+    <>
+      <PageHero
+        title="Articles"
+        subtitle="Educational authority built around practical implementation."
+      />
+      <section className="mx-auto grid max-w-7xl gap-4 px-4 pb-16 md:grid-cols-2 lg:grid-cols-3 lg:px-8">
+        {articles.map((article) => (
+          <article key={article.slug} className="card">
+            <p className="text-xs font-semibold uppercase tracking-wide text-emerald-600">
+              {article.category} · {article.readTime}
+            </p>
+            <h2 className="mt-2 text-lg font-semibold">{article.title}</h2>
+            <p className="mt-2 text-sm text-slate-600">{article.excerpt}</p>
+            <TrackedLink
+              href={`/articles/${article.slug}`}
+              className="mt-3 inline-block text-sm font-semibold text-emerald-600"
+              eventPayload={{ articleSlug: article.slug, placement: "articles-page" }}
+            >
+              Read More →
+            </TrackedLink>
+          </article>
+        ))}
+      </section>
+    </>
+  );
+}
+
+
+================================================================================
+FILE: src/app/playbooks/page.tsx
+================================================================================
+import PageHero from "@/components/PageHero";
+import TrackedLink from "@/components/TrackedLink";
+import { getPlaybooks } from "@/lib/content";
+
+export default async function PlaybooksPage() {
+  const playbooks = await getPlaybooks();
+
+  return (
+    <>
+      <PageHero
+        title="Playbooks"
+        subtitle="Step-by-step implementation guides to install repeatable execution systems."
+      />
+      <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="grid gap-4 md:grid-cols-2">
+          {playbooks.map((item) => (
+            <article key={item.slug} className="card">
+              <h2 className="text-xl font-semibold">{item.title}</h2>
+              <p className="mt-2 text-sm text-slate-600">{item.description}</p>
+              <TrackedLink
+                href={`/playbooks/${item.slug}`}
+                className="mt-4 inline-block text-sm font-semibold text-emerald-600"
+                eventPayload={{ playbookSlug: item.slug, placement: "playbooks-page" }}
+              >
+                View Playbook →
+              </TrackedLink>
+            </article>
+          ))}
+        </div>
+      </section>
+    </>
+  );
+}
+
+
+================================================================================
+FILE: src/app/templates/page.tsx
+================================================================================
+import PageHero from "@/components/PageHero";
+import TrackedLink from "@/components/TrackedLink";
+import { getTemplates } from "@/lib/content";
+
+export default async function TemplatesPage() {
+  const templates = await getTemplates();
+
+  return (
+    <>
+      <PageHero
+        title="Templates"
+        subtitle="Reusable operating templates for planning, delivery, and weekly review."
+      />
+      <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="grid gap-4 md:grid-cols-3">
+          {templates.map((item) => (
+            <div key={item.slug} className="card">
+              <h2 className="text-lg font-semibold">{item.name}</h2>
+              <p className="mt-2 text-sm text-slate-600">{item.description}</p>
+              <TrackedLink
+                href={`/contact?intent=${item.slug}`}
+                className="mt-4 inline-block text-sm font-semibold text-emerald-600"
+                eventPayload={{ templateSlug: item.slug, placement: "templates-page" }}
+              >
+                Request implementation support →
+              </TrackedLink>
+            </div>
+          ))}
+        </div>
+      </section>
+    </>
+  );
+}
+
+
+================================================================================
+FILE: src/app/privacy/page.tsx
+================================================================================
+export default function PrivacyPage() {
+  return (
+    <section className="mx-auto max-w-4xl px-4 py-14 sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-bold">Privacy Policy</h1>
+      <p className="mt-4 text-slate-600">
+        Effective date: March 2026. This policy explains what Operator OS collects, why it is
+        collected, and how it is handled.
+      </p>
+
+      <div className="mt-8 space-y-6 text-slate-700">
+        <section>
+          <h2 className="text-xl font-semibold">1. Information we collect</h2>
+          <p className="mt-2">
+            We may collect contact information (such as name and email), message content submitted
+            through forms, and lightweight analytics events related to site usage.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold">2. How information is used</h2>
+          <p className="mt-2">
+            Information is used to respond to inquiries, deliver requested resources, improve
+            products/tools, and understand which site actions are most useful.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold">3. Data routing and storage</h2>
+          <p className="mt-2">
+            Form submissions may be routed to configured lead destinations (for example a webhook or
+            CRM integration). If no persistent backend is configured, submissions may be logged in
+            server logs only.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold">4. Your choices</h2>
+          <p className="mt-2">
+            You can request removal of your contact information by emailing the support contact listed
+            on this site.
+          </p>
+        </section>
+
+        <section className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-900">
+          <p className="text-sm font-semibold">Legal review required</p>
+          <p className="mt-1 text-sm">
+            This is interim production-safe starter copy and should be reviewed by legal counsel
+            before final launch.
+          </p>
+        </section>
+      </div>
+    </section>
+  );
+}
+
+
+================================================================================
+FILE: src/app/terms/page.tsx
+================================================================================
+export default function TermsPage() {
+  return (
+    <section className="mx-auto max-w-4xl px-4 py-14 sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-bold">Terms of Use</h1>
+      <p className="mt-4 text-slate-600">
+        Effective date: March 2026. These terms govern use of the Operator OS website and resources.
+      </p>
+
+      <div className="mt-8 space-y-6 text-slate-700">
+        <section>
+          <h2 className="text-xl font-semibold">1. Educational + operational resources</h2>
+          <p className="mt-2">
+            Materials on this site are provided for implementation guidance. You are responsible for
+            how you apply workflows and tools within your own business.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold">2. No guaranteed outcomes</h2>
+          <p className="mt-2">
+            Results vary based on execution context. Operator OS does not guarantee specific revenue,
+            productivity, or business outcomes.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold">3. Intellectual property</h2>
+          <p className="mt-2">
+            Unless otherwise noted, site content and templates are owned by Operator OS and may not
+            be redistributed commercially without permission.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold">4. Changes to terms</h2>
+          <p className="mt-2">
+            Terms may be updated periodically. Continued use of the site after updates constitutes
+            acceptance of revised terms.
+          </p>
+        </section>
+
+        <section className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-900">
+          <p className="text-sm font-semibold">Legal review required</p>
+          <p className="mt-1 text-sm">
+            This is interim production-safe starter copy and should be reviewed by legal counsel
+            before final launch.
+          </p>
+        </section>
+      </div>
+    </section>
+  );
+}
+
+
+================================================================================
+FILE: src/app/products/[slug]/page.tsx
+================================================================================
+import { notFound } from "next/navigation";
+import PageHero from "@/components/PageHero";
+import TrackedLink from "@/components/TrackedLink";
+import { getProductBySlug, getProducts } from "@/lib/content";
+
+export async function generateStaticParams() {
+  const products = await getProducts();
+  return products.map((product) => ({ slug: product.slug }));
+}
+
+export default async function ProductDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
+
+  if (!product) {
+    notFound();
+  }
+
+  return (
+    <>
+      <PageHero title={product.name} subtitle={product.summary} />
+      <section className="mx-auto grid max-w-5xl gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-[2fr_1fr] lg:px-8">
+        <article className="card">
+          <p className="text-xs font-semibold uppercase tracking-wide text-indigo-600">{product.priceLabel}</p>
+          <p className="mt-3 text-slate-700">{product.outcome}</p>
+          <h2 className="mt-6 text-xl font-semibold">What’s included</h2>
+          <ul className="mt-3 space-y-2 text-slate-700">
+            {product.includes.map((item) => (
+              <li key={item}>• {item}</li>
+            ))}
+          </ul>
+          <h3 className="mt-6 text-lg font-semibold">Best fit</h3>
+          <p className="mt-2 text-slate-600">{product.audience}</p>
+        </article>
+
+        <aside className="card h-fit border-emerald-200 bg-emerald-50">
+          <h3 className="text-lg font-semibold text-slate-900">Next action</h3>
+          <p className="mt-2 text-sm text-slate-700">
+            Share your current bottleneck and we’ll route you to the fastest implementation path.
+          </p>
+          <TrackedLink
+            href={product.primaryCta.href}
+            className="mt-4 inline-block rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white"
+            eventName="product_cta_click"
+            eventPayload={{ productSlug: product.slug, placement: "product-detail" }}
+          >
+            {product.primaryCta.label}
+          </TrackedLink>
+        </aside>
+      </section>
+    </>
+  );
+}
+
+
+================================================================================
+FILE: src/app/free-tools/[slug]/page.tsx
+================================================================================
+import { notFound } from "next/navigation";
+import PageHero from "@/components/PageHero";
+import TrackedLink from "@/components/TrackedLink";
+import FreeToolRequestForm from "@/components/forms/FreeToolRequestForm";
+import { getFreeToolBySlug, getFreeTools } from "@/lib/content";
+
+export async function generateStaticParams() {
+  const tools = await getFreeTools();
+  return tools.map((tool) => ({ slug: tool.slug }));
+}
+
+export default async function FreeToolDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const tool = await getFreeToolBySlug(slug);
+
+  if (!tool) {
+    notFound();
+  }
+
+  if (tool.slug === "ops-diagnostic") {
+    return (
+      <>
+        <PageHero title={tool.name} subtitle={tool.description} />
+        <section className="mx-auto max-w-4xl px-4 pb-16 sm:px-6 lg:px-8">
+          <div className="card border-emerald-200 bg-emerald-50">
+            <p className="text-slate-700">This tool runs as an interactive assessment.</p>
+            <TrackedLink
+              href="/get-started"
+              className="mt-4 inline-block rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white"
+              eventPayload={{ toolSlug: tool.slug, placement: "free-tool-detail" }}
+            >
+              Start Diagnostic
+            </TrackedLink>
+          </div>
+        </section>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <PageHero title={tool.name} subtitle={tool.description} />
+      <section className="mx-auto grid max-w-5xl gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-[2fr_1fr] lg:px-8">
+        <article className="card">
+          <h2 className="text-xl font-semibold">What you get</h2>
+          <p className="mt-2 text-slate-700">{tool.benefit}</p>
+          <p className="mt-4 text-sm uppercase tracking-wide text-slate-500">Delivery: {tool.delivery}</p>
+        </article>
+        <FreeToolRequestForm toolSlug={tool.slug} toolName={tool.name} />
+      </section>
+    </>
+  );
+}
+
+
+================================================================================
+FILE: src/app/articles/[slug]/page.tsx
+================================================================================
+import { notFound } from "next/navigation";
+import PageHero from "@/components/PageHero";
+import TrackedLink from "@/components/TrackedLink";
+import { getArticleBySlug, getArticles } from "@/lib/content";
+
+export async function generateStaticParams() {
+  const articles = await getArticles();
+  return articles.map((article) => ({ slug: article.slug }));
+}
+
+export default async function ArticleDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
+
+  if (!article) {
+    notFound();
+  }
+
+  return (
+    <>
+      <PageHero
+        title={article.title}
+        subtitle={`${article.category} · ${article.readTime}`}
+      />
+      <article className="mx-auto max-w-4xl px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="card space-y-4">
+          <p className="text-sm text-slate-600">{article.excerpt}</p>
+          {article.body.map((paragraph) => (
+            <p key={paragraph} className="text-slate-700">
+              {paragraph}
+            </p>
+          ))}
+          <TrackedLink
+            href={article.primaryCta.href}
+            className="inline-block rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white"
+            eventPayload={{ articleSlug: article.slug, placement: "article-detail" }}
+          >
+            {article.primaryCta.label}
+          </TrackedLink>
+        </div>
+      </article>
+    </>
+  );
+}
+
+
+================================================================================
+FILE: src/app/playbooks/[slug]/page.tsx
+================================================================================
+import { notFound } from "next/navigation";
+import PageHero from "@/components/PageHero";
+import TrackedLink from "@/components/TrackedLink";
+import { getPlaybookBySlug, getPlaybooks } from "@/lib/content";
+
+export async function generateStaticParams() {
+  const playbooks = await getPlaybooks();
+  return playbooks.map((playbook) => ({ slug: playbook.slug }));
+}
+
+export default async function PlaybookDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const playbook = await getPlaybookBySlug(slug);
+
+  if (!playbook) {
+    notFound();
+  }
+
+  return (
+    <>
+      <PageHero title={playbook.title} subtitle={playbook.description} />
+      <section className="mx-auto max-w-4xl px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="card">
+          <h2 className="text-xl font-semibold">Milestones</h2>
+          <ol className="mt-3 list-inside list-decimal space-y-2 text-slate-700">
+            {playbook.milestones.map((milestone) => (
+              <li key={milestone}>{milestone}</li>
+            ))}
+          </ol>
+          <TrackedLink
+            href={playbook.primaryCta.href}
+            className="mt-5 inline-block rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white"
+            eventPayload={{ playbookSlug: playbook.slug, placement: "playbook-detail" }}
+          >
+            {playbook.primaryCta.label}
+          </TrackedLink>
+        </div>
+      </section>
+    </>
+  );
+}
+
+
+================================================================================
+FILE: src/app/api/newsletter/route.ts
+================================================================================
+import { NextResponse } from "next/server";
+import { submitLead } from "@/lib/leads";
+import { trackServerEvent } from "@/lib/analytics/server";
+import { isValidEmail, normalizeString } from "@/lib/validation";
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const email = normalizeString(body?.email).toLowerCase();
+    const sourcePath = normalizeString(body?.sourcePath) || "/";
+
+    if (!isValidEmail(email)) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: {
+            code: "INVALID_EMAIL",
+            message: "Please provide a valid email address.",
+            fields: ["email"],
+          },
+        },
+        { status: 400 },
+      );
+    }
+
+    const leadResult = await submitLead({
+      type: "newsletter",
+      email,
+      sourcePath,
+      createdAt: new Date().toISOString(),
+      payload: {
+        email,
+        sourcePath,
+      },
+    });
+
+    await trackServerEvent({
+      name: "newsletter_submit",
+      path: sourcePath,
+      properties: { emailDomain: email.split("@")[1] ?? "unknown" },
+    });
+
+    return NextResponse.json({
+      ok: true,
+      message: "You’re on the list. Expect practical systems and workflows soon.",
+      warning: leadResult.warning,
+      storage: {
+        persisted: leadResult.persisted,
+        providers: leadResult.results,
+      },
+    });
+  } catch {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: {
+          code: "BAD_REQUEST",
+          message: "Unable to process newsletter signup payload.",
+        },
+      },
+      { status: 400 },
+    );
+  }
+}
+
+
+================================================================================
+FILE: src/app/api/contact/route.ts
+================================================================================
+import { NextResponse } from "next/server";
+import { submitLead } from "@/lib/leads";
+import { trackServerEvent } from "@/lib/analytics/server";
+import {
+  isNonEmptyString,
+  isValidEmail,
+  normalizeString,
+} from "@/lib/validation";
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+
+    const name = normalizeString(body?.name);
+    const email = normalizeString(body?.email).toLowerCase();
+    const message = normalizeString(body?.message);
+    const topic = normalizeString(body?.topic);
+    const sourcePath = normalizeString(body?.sourcePath) || "/contact";
+
+    const invalidFields: string[] = [];
+
+    if (!isNonEmptyString(name)) invalidFields.push("name");
+    if (!isValidEmail(email)) invalidFields.push("email");
+    if (!isNonEmptyString(message) || message.length < 10) invalidFields.push("message");
+
+    if (invalidFields.length > 0) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message:
+              "Please provide name, valid email, and a message of at least 10 characters.",
+            fields: invalidFields,
+          },
+        },
+        { status: 400 },
+      );
+    }
+
+    const leadResult = await submitLead({
+      type: "contact",
+      name,
+      email,
+      sourcePath,
+      createdAt: new Date().toISOString(),
+      payload: {
+        name,
+        email,
+        message,
+        topic,
+        sourcePath,
+      },
+    });
+
+    await trackServerEvent({
+      name: "contact_submit",
+      path: sourcePath,
+      properties: {
+        topic: topic || "general",
+      },
+    });
+
+    return NextResponse.json({
+      ok: true,
+      message: "Thanks — your message is in. We’ll follow up shortly.",
+      warning: leadResult.warning,
+      storage: {
+        persisted: leadResult.persisted,
+        providers: leadResult.results,
+      },
+    });
+  } catch {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: {
+          code: "BAD_REQUEST",
+          message: "Unable to process contact form payload.",
+        },
+      },
+      { status: 400 },
+    );
+  }
+}
+
+
+================================================================================
+FILE: src/app/api/diagnostic/route.ts
+================================================================================
+import { NextResponse } from "next/server";
+import { scoreDiagnostic } from "@/lib/diagnostic";
+import { submitLead } from "@/lib/leads";
+import { trackServerEvent } from "@/lib/analytics/server";
+import { isObject, isValidEmail, normalizeString } from "@/lib/validation";
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+
+    const name = normalizeString(body?.name) || undefined;
+    const email = normalizeString(body?.email).toLowerCase();
+    const sourcePath = normalizeString(body?.sourcePath) || "/get-started";
+
+    if (email && !isValidEmail(email)) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: {
+            code: "INVALID_EMAIL",
+            message: "If provided, email must be valid.",
+            fields: ["email"],
+          },
+        },
+        { status: 400 },
+      );
+    }
+
+    if (!isObject(body?.answers)) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: {
+            code: "INVALID_ANSWERS",
+            message: "Answers must be an object keyed by diagnostic question id.",
+            fields: ["answers"],
+          },
+        },
+        { status: 400 },
+      );
+    }
+
+    const answers = Object.entries(body.answers).reduce<Record<string, number>>(
+      (acc, [key, value]) => {
+        if (typeof value === "number" && Number.isFinite(value)) {
+          acc[key] = value;
+        }
+        return acc;
+      },
+      {},
+    );
+
+    const result = await scoreDiagnostic(answers);
+
+    const leadResult = await submitLead({
+      type: "diagnostic",
+      name,
+      email: email || undefined,
+      sourcePath,
+      createdAt: new Date().toISOString(),
+      payload: {
+        name,
+        email: email || undefined,
+        answers,
+        result,
+      },
+    });
+
+    await trackServerEvent({
+      name: "diagnostic_complete",
+      path: sourcePath,
+      properties: {
+        score: result.totalScore,
+        maxScore: result.maxScore,
+        tier: result.maturityTierId,
+        recommendedProductSlug: result.recommendedProductSlug,
+      },
+    });
+
+    return NextResponse.json({
+      ok: true,
+      result,
+      warning: leadResult.warning,
+      storage: {
+        persisted: leadResult.persisted,
+        providers: leadResult.results,
+      },
+    });
+  } catch {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: {
+          code: "BAD_REQUEST",
+          message: "Unable to process diagnostic payload.",
+        },
+      },
+      { status: 400 },
+    );
+  }
+}
+
+
+================================================================================
+FILE: src/app/api/free-tool-request/route.ts
+================================================================================
+import { NextResponse } from "next/server";
+import { submitLead } from "@/lib/leads";
+import { trackServerEvent } from "@/lib/analytics/server";
+import {
+  isNonEmptyString,
+  isValidEmail,
+  normalizeString,
+} from "@/lib/validation";
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+
+    const toolSlug = normalizeString(body?.toolSlug);
+    const name = normalizeString(body?.name);
+    const email = normalizeString(body?.email).toLowerCase();
+    const useCase = normalizeString(body?.useCase);
+    const sourcePath = normalizeString(body?.sourcePath) || "/free-tools";
+
+    const invalidFields: string[] = [];
+
+    if (!isNonEmptyString(toolSlug)) invalidFields.push("toolSlug");
+    if (!isNonEmptyString(name)) invalidFields.push("name");
+    if (!isValidEmail(email)) invalidFields.push("email");
+
+    if (invalidFields.length > 0) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: "Please provide tool, name, and a valid email.",
+            fields: invalidFields,
+          },
+        },
+        { status: 400 },
+      );
+    }
+
+    const leadResult = await submitLead({
+      type: "free-tool-request",
+      name,
+      email,
+      sourcePath,
+      createdAt: new Date().toISOString(),
+      payload: {
+        toolSlug,
+        name,
+        email,
+        useCase,
+        sourcePath,
+      },
+    });
+
+    await trackServerEvent({
+      name: "free_tool_request",
+      path: sourcePath,
+      properties: { toolSlug },
+    });
+
+    return NextResponse.json({
+      ok: true,
+      message:
+        "Request received. We’ll send the tool details and next steps to your inbox.",
+      warning: leadResult.warning,
+      storage: {
+        persisted: leadResult.persisted,
+        providers: leadResult.results,
+      },
+    });
+  } catch {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: {
+          code: "BAD_REQUEST",
+          message: "Unable to process free tool request payload.",
+        },
+      },
+      { status: 400 },
+    );
+  }
+}
+
+
+================================================================================
+FILE: src/app/api/analytics/route.ts
+================================================================================
+import { NextResponse } from "next/server";
+import { trackServerEvent } from "@/lib/analytics/server";
+import { isNonEmptyString, normalizeString } from "@/lib/validation";
+
+const allowedEventNames = new Set([
+  "page_view",
+  "cta_click",
+  "newsletter_submit",
+  "contact_submit",
+  "diagnostic_start",
+  "diagnostic_complete",
+  "free_tool_request",
+  "product_cta_click",
+]);
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const name = normalizeString(body?.name);
+    const path = normalizeString(body?.path) || undefined;
+
+    if (!isNonEmptyString(name) || !allowedEventNames.has(name)) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: {
+            code: "INVALID_EVENT_NAME",
+            message: "Unsupported analytics event name.",
+          },
+        },
+        { status: 400 },
+      );
+    }
+
+    await trackServerEvent({
+      name: name as
+        | "page_view"
+        | "cta_click"
+        | "newsletter_submit"
+        | "contact_submit"
+        | "diagnostic_start"
+        | "diagnostic_complete"
+        | "free_tool_request"
+        | "product_cta_click",
+      path,
+      properties:
+        body?.properties && typeof body.properties === "object"
+          ? body.properties
+          : undefined,
+      timestamp: normalizeString(body?.timestamp) || undefined,
+    });
+
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: {
+          code: "BAD_REQUEST",
+          message: "Invalid analytics payload.",
+        },
+      },
+      { status: 400 },
+    );
+  }
+}
+
+
+================================================================================
+FILE: src/components/Header.tsx
+================================================================================
+import TrackedLink from "@/components/TrackedLink";
+import { getSiteConfig } from "@/lib/content";
+
+export default async function Header() {
+  const siteConfig = await getSiteConfig();
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+        <TrackedLink href="/" className="text-lg font-bold tracking-tight text-slate-900">
+          {siteConfig.name}
+        </TrackedLink>
+
+        <nav className="hidden items-center gap-6 md:flex">
+          {siteConfig.nav.map((item) => (
+            <TrackedLink
+              key={item.href}
+              href={item.href}
+              className="text-sm font-medium text-slate-700 hover:text-slate-900"
+            >
+              {item.label}
+            </TrackedLink>
+          ))}
+        </nav>
+
+        <TrackedLink
+          href="/get-started"
+          className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+          eventPayload={{ placement: "header" }}
+        >
+          Take the Ops Diagnostic
+        </TrackedLink>
+      </div>
+    </header>
+  );
+}
+
+
+================================================================================
+FILE: src/components/Footer.tsx
+================================================================================
+import Link from "next/link";
+import NewsletterForm from "@/components/forms/NewsletterForm";
+import { getSiteConfig } from "@/lib/content";
+
+export default async function Footer() {
+  const siteConfig = await getSiteConfig();
+
+  return (
+    <footer className="mt-20 border-t border-slate-200 bg-slate-50">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-3 lg:px-8">
+        <div>
+          <h3 className="text-lg font-semibold text-slate-900">{siteConfig.name}</h3>
+          <p className="mt-2 text-sm text-slate-600">Practical systems, not hype.</p>
+          <p className="text-sm text-slate-600">Templates, SOPs, and execution workflows.</p>
+        </div>
+
+        <div>
+          <h4 className="font-semibold text-slate-900">Navigate</h4>
+          <ul className="mt-3 space-y-2 text-sm">
+            {siteConfig.nav.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className="text-slate-600 hover:text-slate-900">
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link href="/privacy" className="text-slate-600 hover:text-slate-900">
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link href="/terms" className="text-slate-600 hover:text-slate-900">
+                Terms
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="font-semibold text-slate-900">Newsletter</h4>
+          <p className="mt-3 text-sm text-slate-600">Get one practical system every week.</p>
+          <NewsletterForm
+            className="mt-3 flex gap-2"
+            inputClassName="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            buttonClassName="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white"
+            placeholder={siteConfig.newsletter.placeholder}
+            buttonLabel="Join"
+          />
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+
+================================================================================
+FILE: src/components/PageHero.tsx
+================================================================================
+export default function PageHero({ title, subtitle }: { title: string; subtitle: string }) {
+  return (
+    <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">{title}</h1>
+      <p className="mt-4 max-w-3xl text-lg text-slate-600">{subtitle}</p>
+    </section>
+  );
+}
+
+
+================================================================================
+FILE: src/components/Section.tsx
+================================================================================
+import { ReactNode } from "react";
+
+export default function Section({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mb-8 max-w-3xl">
+        <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">{title}</h2>
+        {subtitle && <p className="mt-3 text-lg text-slate-600">{subtitle}</p>}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+
+================================================================================
+FILE: src/components/TrackedLink.tsx
+================================================================================
+"use client";
+
+import Link, { LinkProps } from "next/link";
+import { ReactNode } from "react";
+import { trackClientEvent } from "@/lib/analytics/client";
+import { AnalyticsEventName } from "@/lib/analytics/types";
+
+type TrackedLinkProps = LinkProps & {
+  className?: string;
+  children: ReactNode;
+  eventName?: AnalyticsEventName;
+  eventProps?: Record<string, unknown>;
+  eventPayload?: Record<string, unknown>; // backwards-compatible alias
+};
+
+export default function TrackedLink({
+  className,
+  children,
+  eventName = "cta_click",
+  eventProps,
+  eventPayload,
+  ...linkProps
+}: TrackedLinkProps) {
+  const properties = eventProps ?? eventPayload;
+
+  return (
+    <Link
+      {...linkProps}
+      className={className}
+      onClick={() => {
+        const targetPath =
+          typeof linkProps.href === "string"
+            ? linkProps.href
+            : linkProps.href.pathname ?? undefined;
+
+        trackClientEvent({
+          name: eventName,
+          path: targetPath,
+          properties,
+        });
+      }}
+    >
+      {children}
+    </Link>
+  );
+}
+
+
+================================================================================
+FILE: src/components/analytics/AnalyticsPageView.tsx
+================================================================================
+"use client";
+
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { trackClientEvent } from "@/lib/analytics/client";
+
+export default function AnalyticsPageView() {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    trackClientEvent({
+      name: "page_view",
+      path: pathname,
+    });
+  }, [pathname]);
+
+  return null;
+}
+
+
+================================================================================
+FILE: src/components/forms/NewsletterForm.tsx
+================================================================================
+"use client";
+
+import { FormEvent, useState } from "react";
+import { usePathname } from "next/navigation";
+import { trackClientEvent } from "@/lib/analytics/client";
+
+type NewsletterFormProps = {
+  className?: string;
+  inputClassName?: string;
+  buttonClassName?: string;
+  placeholder?: string;
+  buttonLabel?: string;
+};
+
+export default function NewsletterForm({
+  className,
+  inputClassName,
+  buttonClassName,
+  placeholder = "you@business.com",
+  buttonLabel = "Join",
+}: NewsletterFormProps) {
+  const pathname = usePathname();
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
+    "idle",
+  );
+  const [message, setMessage] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setStatus("loading");
+    setMessage("");
+
+    try {
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          sourcePath: pathname,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        setStatus("error");
+        setMessage(data?.error?.message ?? "Signup failed. Please try again.");
+        return;
+      }
+
+      trackClientEvent({
+        name: "newsletter_submit",
+        path: pathname,
+      });
+
+      setStatus("success");
+      setMessage(data.warning ? `${data.message} (${data.warning})` : data.message ?? "Thanks for joining.");
+      setEmail("");
+    } catch {
+      setStatus("error");
+      setMessage("Network error. Please try again.");
+    }
+  }
+
+  return (
+    <div>
+      <form
+        onSubmit={handleSubmit}
+        className={className ?? "mt-5 flex max-w-xl flex-col gap-3 sm:flex-row"}
+      >
+        <input
+          required
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          placeholder={placeholder}
+          className={
+            inputClassName ??
+            "w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-3"
+          }
+          aria-label="Email address"
+        />
+        <button
+          disabled={status === "loading"}
+          className={
+            buttonClassName ??
+            "rounded-lg bg-emerald-500 px-5 py-3 font-semibold text-white hover:bg-emerald-400"
+          }
+        >
+          {status === "loading" ? "Joining..." : buttonLabel}
+        </button>
+      </form>
+      {message && (
+        <p
+          className={`mt-2 text-sm ${status === "success" ? "text-emerald-300" : "text-rose-300"}`}
+        >
+          {message}
+        </p>
+      )}
+    </div>
+  );
+}
+
+
+================================================================================
+FILE: src/components/forms/ContactForm.tsx
+================================================================================
+"use client";
+
+import { FormEvent, useState } from "react";
+import { usePathname } from "next/navigation";
+
+type FormState = {
+  name: string;
+  email: string;
+  topic: string;
+  message: string;
+};
+
+type ContactFormProps = {
+  initialTopic?: string;
+};
+
+export default function ContactForm({ initialTopic = "" }: ContactFormProps) {
+  const pathname = usePathname();
+
+  const [state, setState] = useState<FormState>({
+    name: "",
+    email: "",
+    topic: initialTopic,
+    message: "",
+  });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
+    "idle",
+  );
+  const [message, setMessage] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setStatus("loading");
+    setMessage("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...state, sourcePath: pathname }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        setStatus("error");
+        setMessage(data?.error?.message ?? "Could not send message.");
+        return;
+      }
+
+      setStatus("success");
+      setMessage(data.warning ? `${data.message} (${data.warning})` : data.message ?? "Message sent.");
+      setState((previous) => ({
+        name: "",
+        email: "",
+        topic: previous.topic,
+        message: "",
+      }));
+    } catch {
+      setStatus("error");
+      setMessage("Network error. Please try again.");
+    }
+  }
+
+  return (
+    <form className="card space-y-4" onSubmit={handleSubmit}>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Name</label>
+        <input
+          required
+          value={state.name}
+          onChange={(event) => setState((prev) => ({ ...prev, name: event.target.value }))}
+          className="w-full rounded-lg border border-slate-300 px-3 py-2"
+        />
+      </div>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Email</label>
+        <input
+          required
+          type="email"
+          value={state.email}
+          onChange={(event) => setState((prev) => ({ ...prev, email: event.target.value }))}
+          className="w-full rounded-lg border border-slate-300 px-3 py-2"
+        />
+      </div>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Topic (optional)</label>
+        <input
+          value={state.topic}
+          onChange={(event) => setState((prev) => ({ ...prev, topic: event.target.value }))}
+          placeholder="Implementation support, product question, etc."
+          className="w-full rounded-lg border border-slate-300 px-3 py-2"
+        />
+      </div>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Message</label>
+        <textarea
+          required
+          rows={6}
+          value={state.message}
+          onChange={(event) =>
+            setState((prev) => ({ ...prev, message: event.target.value }))
+          }
+          className="w-full rounded-lg border border-slate-300 px-3 py-2"
+          placeholder="Tell us about your workflow challenge and current setup."
+        />
+      </div>
+      <button
+        disabled={status === "loading"}
+        className="rounded-lg bg-emerald-600 px-4 py-2 font-semibold text-white"
+      >
+        {status === "loading" ? "Sending..." : "Send"}
+      </button>
+      {message && (
+        <p className={`text-sm ${status === "success" ? "text-emerald-700" : "text-rose-700"}`}>
+          {message}
+        </p>
+      )}
+    </form>
+  );
+}
+
+
+================================================================================
+FILE: src/components/forms/DiagnosticForm.tsx
+================================================================================
+"use client";
+
+import { FormEvent, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { DiagnosticQuestion } from "@/lib/content/types";
+import { trackClientEvent } from "@/lib/analytics/client";
+
+type DiagnosticResult = {
+  totalScore: number;
+  maxScore: number;
+  maturityTierId: string;
+  maturityTierLabel: string;
+  recommendedPath: string;
+  recommendedProductSlug: string;
+  recommendedFreeToolSlug: string;
+  next7DayAction: string;
+};
+
+type DiagnosticFormProps = {
+  questions: DiagnosticQuestion[];
+};
+
+export default function DiagnosticForm({ questions }: DiagnosticFormProps) {
+  const pathname = usePathname();
+  const hasStartedRef = useRef(false);
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
+    "idle",
+  );
+  const [message, setMessage] = useState("");
+  const [result, setResult] = useState<DiagnosticResult | null>(null);
+
+  const isComplete = useMemo(
+    () => questions.every((question) => typeof answers[question.id] === "number"),
+    [answers, questions],
+  );
+
+  function updateAnswer(questionId: string, score: number) {
+    if (!hasStartedRef.current) {
+      hasStartedRef.current = true;
+      trackClientEvent({
+        name: "diagnostic_start",
+        path: pathname,
+      });
+    }
+
+    setAnswers((prev) => ({ ...prev, [questionId]: score }));
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!isComplete) {
+      setStatus("error");
+      setMessage("Please answer every question to get an accurate recommendation.");
+      return;
+    }
+
+    setStatus("loading");
+    setMessage("");
+
+    try {
+      const response = await fetch("/api/diagnostic", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          answers,
+          sourcePath: pathname,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        setStatus("error");
+        setMessage(data?.error?.message ?? "Could not complete diagnostic.");
+        return;
+      }
+
+      setStatus("success");
+      setResult(data.result ?? null);
+      setMessage(
+        data.warning
+          ? `Diagnostic complete (${data.warning})`
+          : "Diagnostic complete. Your recommendation is ready below.",
+      );
+    } catch {
+      setStatus("error");
+      setMessage("Network error. Please try again.");
+    }
+  }
+
+  return (
+    <div className="space-y-6">
+      <form className="card space-y-6" onSubmit={handleSubmit}>
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <label className="mb-1 block text-sm font-medium">Name (optional)</label>
+            <input
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium">Email (optional)</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-5">
+          {questions.map((question, index) => (
+            <div key={question.id} className="rounded-xl border border-slate-200 p-4">
+              <p className="font-semibold text-slate-900">
+                {index + 1}) {question.prompt}
+              </p>
+              <div className="mt-3 space-y-2">
+                {question.options.map((option) => {
+                  const id = `${question.id}-${option.score}`;
+                  return (
+                    <label key={id} htmlFor={id} className="flex cursor-pointer items-start gap-2 text-sm text-slate-700">
+                      <input
+                        id={id}
+                        name={question.id}
+                        type="radio"
+                        checked={answers[question.id] === option.score}
+                        onChange={() => updateAnswer(question.id, option.score)}
+                        className="mt-1"
+                      />
+                      <span>{option.label}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <button
+          disabled={status === "loading"}
+          className="rounded-lg bg-emerald-600 px-5 py-2 font-semibold text-white"
+        >
+          {status === "loading" ? "Scoring..." : "Get My Recommendation"}
+        </button>
+
+        {message && (
+          <p className={`text-sm ${status === "success" ? "text-emerald-700" : "text-rose-700"}`}>
+            {message}
+          </p>
+        )}
+      </form>
+
+      {result && (
+        <section className="card border-emerald-200 bg-emerald-50">
+          <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
+            Workflow Maturity: {result.maturityTierLabel}
+          </p>
+          <h2 className="mt-2 text-2xl font-semibold text-slate-900">
+            Score: {result.totalScore} / {result.maxScore}
+          </h2>
+          <p className="mt-3 text-slate-700">{result.recommendedPath}</p>
+
+          <div className="mt-4 space-y-2 text-sm text-slate-700">
+            <p>
+              <strong>Recommended next product:</strong>{" "}
+              <Link
+                className="font-semibold text-emerald-700"
+                href={`/products/${result.recommendedProductSlug}`}
+              >
+                /products/{result.recommendedProductSlug}
+              </Link>
+            </p>
+            <p>
+              <strong>Recommended free tool:</strong>{" "}
+              <Link
+                className="font-semibold text-emerald-700"
+                href={`/free-tools/${result.recommendedFreeToolSlug}`}
+              >
+                /free-tools/{result.recommendedFreeToolSlug}
+              </Link>
+            </p>
+            <p>
+              <strong>Next 7-day action:</strong> {result.next7DayAction}
+            </p>
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}
+
+
+================================================================================
+FILE: src/components/forms/FreeToolRequestForm.tsx
+================================================================================
+"use client";
+
+import { FormEvent, useState } from "react";
+import { usePathname } from "next/navigation";
+
+type FreeToolRequestFormProps = {
+  toolSlug: string;
+  toolName: string;
+};
+
+export default function FreeToolRequestForm({
+  toolSlug,
+  toolName,
+}: FreeToolRequestFormProps) {
+  const pathname = usePathname();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [useCase, setUseCase] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
+    "idle",
+  );
+  const [message, setMessage] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setStatus("loading");
+    setMessage("");
+
+    try {
+      const response = await fetch("/api/free-tool-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          toolSlug,
+          name,
+          email,
+          useCase,
+          sourcePath: pathname,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        setStatus("error");
+        setMessage(data?.error?.message ?? "Could not submit request.");
+        return;
+      }
+
+      setStatus("success");
+      setMessage(data.warning ? `${data.message} (${data.warning})` : data.message ?? `${toolName} request received.`);
+      setName("");
+      setEmail("");
+      setUseCase("");
+    } catch {
+      setStatus("error");
+      setMessage("Network error. Please try again.");
+    }
+  }
+
+  return (
+    <form className="card space-y-4" onSubmit={handleSubmit}>
+      <p className="text-sm text-slate-600">
+        Request access to <strong>{toolName}</strong>. We’ll send details and implementation
+        guidance.
+      </p>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Name</label>
+        <input
+          required
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          className="w-full rounded-lg border border-slate-300 px-3 py-2"
+        />
+      </div>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Email</label>
+        <input
+          required
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          className="w-full rounded-lg border border-slate-300 px-3 py-2"
+        />
+      </div>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Current use case (optional)</label>
+        <textarea
+          rows={4}
+          value={useCase}
+          onChange={(event) => setUseCase(event.target.value)}
+          className="w-full rounded-lg border border-slate-300 px-3 py-2"
+          placeholder="What are you trying to improve right now?"
+        />
+      </div>
+      <button
+        disabled={status === "loading"}
+        className="rounded-lg bg-emerald-600 px-4 py-2 font-semibold text-white"
+      >
+        {status === "loading" ? "Submitting..." : "Request Free Tool"}
+      </button>
+      {message && (
+        <p className={`text-sm ${status === "success" ? "text-emerald-700" : "text-rose-700"}`}>
+          {message}
+        </p>
+      )}
+    </form>
+  );
+}
+
+
+================================================================================
+FILE: src/lib/content/types.ts
+================================================================================
+export type NavItem = { label: string; href: string };
+
+export type SiteConfig = {
+  name: string;
+  tagline: string;
+  description: string;
+  nav: NavItem[];
+  quickActions: string[];
+  systemLayers: Array<{ title: string; description: string }>;
+  trustBar: string[];
+  newsletter: {
+    title: string;
+    description: string;
+    placeholder: string;
+    buttonLabel: string;
+  };
+};
+
+export type Product = {
+  slug: string;
+  name: string;
+  audience: string;
+  outcome: string;
+  includes: string[];
+  summary: string;
+  priceLabel: string;
+  primaryCta: { label: string; href: string };
+};
+
+export type FreeTool = {
+  slug: string;
+  name: string;
+  description: string;
+  delivery: string;
+  benefit: string;
+  primaryCta: { label: string; href: string };
+};
+
+export type Article = {
+  slug: string;
+  title: string;
+  category: string;
+  excerpt: string;
+  readTime: string;
+  body: string[];
+  primaryCta: { label: string; href: string };
+};
+
+export type DiagnosticQuestion = {
+  id: string;
+  prompt: string;
+  options: Array<{ label: string; score: number }>;
+};
+
+export type DiagnosticTier = {
+  id: string;
+  label: string;
+  minScore: number;
+  maxScore: number;
+  recommendedPath: string;
+  recommendedProductSlug: string;
+  recommendedFreeToolSlug: string;
+  next7DayAction: string;
+};
+
+export type DiagnosticConfig = {
+  questions: DiagnosticQuestion[];
+  tiers: DiagnosticTier[];
+};
+
+export type TestimonialConfig = {
+  mode: "coming-soon" | "live";
+  title: string;
+  subtitle: string;
+  comingSoonMessage?: string;
+  founderNote?: { heading: string; body: string };
+  items: Array<{ quote: string; name: string; role?: string }>;
+};
+
+export type Playbook = {
+  slug: string;
+  title: string;
+  description: string;
+  milestones: string[];
+  primaryCta: { label: string; href: string };
+};
+
+export type Template = {
+  slug: string;
+  name: string;
+  description: string;
+};
+
+
+================================================================================
+FILE: src/lib/content/index.ts
+================================================================================
+import path from "node:path";
+import { existsSync, readFileSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import {
+  Article,
+  DiagnosticConfig,
+  FreeTool,
+  Playbook,
+  Product,
+  SiteConfig,
+  Template,
+  TestimonialConfig,
+} from "./types";
+
+function hasProjectMarkers(dir: string) {
+  const packageJsonPath = path.join(dir, "package.json");
+  const contentPath = path.join(dir, "content");
+
+  if (!existsSync(packageJsonPath) || !existsSync(contentPath)) {
+    return false;
+  }
+
+  try {
+    const pkg = JSON.parse(readFileSync(packageJsonPath, "utf8")) as {
+      name?: string;
+    };
+    return typeof pkg.name === "string" && pkg.name.includes("operator-os-site");
+  } catch {
+    return false;
+  }
+}
+
+function resolveProjectRoot() {
+  const candidates = new Set<string>();
+
+  candidates.add(process.cwd());
+  if (process.env.PWD) {
+    candidates.add(process.env.PWD);
+  }
+
+  for (const arg of process.argv) {
+    if (!arg || arg.startsWith("-")) {
+      continue;
+    }
+
+    const absolute = path.resolve(arg);
+    candidates.add(absolute);
+    candidates.add(path.dirname(absolute));
+  }
+
+  candidates.add(path.join(process.cwd(), "operator-os-site-v2"));
+
+  for (const candidate of candidates) {
+    if (hasProjectMarkers(candidate)) {
+      return candidate;
+    }
+  }
+
+  return process.cwd();
+}
+
+const PROJECT_ROOT = resolveProjectRoot();
+const CONTENT_DIR = path.join(PROJECT_ROOT, "content");
+const cache = new Map<string, unknown>();
+
+async function loadContentFile<T>(fileName: string): Promise<T> {
+  if (cache.has(fileName)) {
+    return cache.get(fileName) as T;
+  }
+
+  const fullPath = path.join(CONTENT_DIR, fileName);
+  const raw = await readFile(fullPath, "utf8");
+  const parsed = JSON.parse(raw) as T;
+  cache.set(fileName, parsed);
+  return parsed;
+}
+
+export function clearContentCache() {
+  cache.clear();
+}
+
+export async function getSiteConfig() {
+  return loadContentFile<SiteConfig>("site-config.json");
+}
+
+export async function getProducts() {
+  return loadContentFile<Product[]>("products.json");
+}
+
+export async function getFreeTools() {
+  return loadContentFile<FreeTool[]>("free-tools.json");
+}
+
+export async function getArticles() {
+  return loadContentFile<Article[]>("articles.json");
+}
+
+export async function getTestimonials() {
+  return loadContentFile<TestimonialConfig>("testimonials.json");
+}
+
+export async function getDiagnosticConfig() {
+  return loadContentFile<DiagnosticConfig>("diagnostic-questions.json");
+}
+
+export async function getPlaybooks() {
+  return loadContentFile<Playbook[]>("playbooks.json");
+}
+
+export async function getTemplates() {
+  return loadContentFile<Template[]>("templates.json");
+}
+
+export async function getProductBySlug(slug: string) {
+  const items = await getProducts();
+  return items.find((item) => item.slug === slug) ?? null;
+}
+
+export async function getFreeToolBySlug(slug: string) {
+  const items = await getFreeTools();
+  return items.find((item) => item.slug === slug) ?? null;
+}
+
+export async function getArticleBySlug(slug: string) {
+  const items = await getArticles();
+  return items.find((item) => item.slug === slug) ?? null;
+}
+
+export async function getPlaybookBySlug(slug: string) {
+  const items = await getPlaybooks();
+  return items.find((item) => item.slug === slug) ?? null;
+}
+
+
+================================================================================
+FILE: src/lib/leads/types.ts
+================================================================================
+export type LeadType = "newsletter" | "contact" | "diagnostic" | "free-tool-request";
+
+export type LeadRecord = {
+  type: LeadType;
+  email?: string;
+  name?: string;
+  sourcePath?: string;
+  payload: Record<string, unknown>;
+  createdAt: string;
+};
+
+export type LeadStoreResult = {
+  provider: string;
+  ok: boolean;
+  persisted: boolean;
+  message: string;
+};
+
+export interface LeadProvider {
+  name: string;
+  storeLead: (lead: LeadRecord) => Promise<LeadStoreResult>;
+}
+
+
+================================================================================
+FILE: src/lib/leads/index.ts
+================================================================================
+import { consoleLeadProvider } from "./providers/consoleProvider";
+import { webhookLeadProvider } from "./providers/webhookProvider";
+import { LeadProvider, LeadRecord, LeadStoreResult } from "./types";
+
+function getProviders(): LeadProvider[] {
+  const mode = process.env.LEADS_PROVIDER ?? "console";
+
+  if (mode === "webhook") {
+    return webhookLeadProvider ? [webhookLeadProvider] : [consoleLeadProvider];
+  }
+
+  if (mode === "both") {
+    return webhookLeadProvider
+      ? [consoleLeadProvider, webhookLeadProvider]
+      : [consoleLeadProvider];
+  }
+
+  return [consoleLeadProvider];
+}
+
+export async function submitLead(record: LeadRecord) {
+  const providers = getProviders();
+  const results: LeadStoreResult[] = [];
+
+  for (const provider of providers) {
+    results.push(await provider.storeLead(record));
+  }
+
+  const persisted = results.some((result) => result.persisted);
+  const warning = persisted
+    ? undefined
+    : "No persistent lead destination configured. Set LEADS_WEBHOOK_URL (and LEADS_PROVIDER=webhook or both).";
+
+  return {
+    ok: results.some((result) => result.ok),
+    persisted,
+    warning,
+    results,
+  };
+}
+
+
+================================================================================
+FILE: src/lib/leads/providers/consoleProvider.ts
+================================================================================
+import { LeadProvider } from "../types";
+
+export const consoleLeadProvider: LeadProvider = {
+  name: "console",
+  async storeLead(lead) {
+    console.info("[leads:console] lead received", {
+      type: lead.type,
+      email: lead.email,
+      name: lead.name,
+      sourcePath: lead.sourcePath,
+      createdAt: lead.createdAt,
+    });
+
+    return {
+      provider: "console",
+      ok: true,
+      persisted: false,
+      message:
+        "Captured in server logs only. Configure LEADS_WEBHOOK_URL for durable storage.",
+    };
+  },
+};
+
+
+================================================================================
+FILE: src/lib/leads/providers/webhookProvider.ts
+================================================================================
+import { LeadProvider } from "../types";
+
+const webhookUrl = process.env.LEADS_WEBHOOK_URL;
+
+export const webhookLeadProvider: LeadProvider | null = webhookUrl
+  ? {
+      name: "webhook",
+      async storeLead(lead) {
+        try {
+          const response = await fetch(webhookUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Lead-Source": "operator-os-site-v2",
+            },
+            body: JSON.stringify(lead),
+          });
+
+          if (!response.ok) {
+            return {
+              provider: "webhook",
+              ok: false,
+              persisted: false,
+              message: `Webhook returned ${response.status}`,
+            };
+          }
+
+          return {
+            provider: "webhook",
+            ok: true,
+            persisted: true,
+            message: "Lead delivered to webhook",
+          };
+        } catch (error) {
+          return {
+            provider: "webhook",
+            ok: false,
+            persisted: false,
+            message:
+              error instanceof Error ? error.message : "Unknown webhook error",
+          };
+        }
+      },
+    }
+  : null;
+
+
+================================================================================
+FILE: src/lib/analytics/types.ts
+================================================================================
+export type AnalyticsEventName =
+  | "page_view"
+  | "cta_click"
+  | "newsletter_submit"
+  | "contact_submit"
+  | "diagnostic_start"
+  | "diagnostic_complete"
+  | "free_tool_request"
+  | "product_cta_click";
+
+export type AnalyticsEvent = {
+  name: AnalyticsEventName;
+  path?: string;
+  timestamp?: string;
+  properties?: Record<string, unknown>;
+};
+
+export interface AnalyticsProvider {
+  name: string;
+  send: (event: AnalyticsEvent) => Promise<void>;
+}
+
+
+================================================================================
+FILE: src/lib/analytics/client.ts
+================================================================================
+"use client";
+
+import { AnalyticsEvent } from "./types";
+
+export async function trackClientEvent(event: AnalyticsEvent) {
+  const payload = {
+    ...event,
+    timestamp: event.timestamp ?? new Date().toISOString(),
+  };
+
+  if (process.env.NEXT_PUBLIC_ANALYTICS_DEBUG === "true") {
+    console.info("[analytics:client]", payload);
+  }
+
+  try {
+    const body = JSON.stringify(payload);
+
+    if (navigator.sendBeacon) {
+      const blob = new Blob([body], { type: "application/json" });
+      navigator.sendBeacon("/api/analytics", blob);
+      return;
+    }
+
+    await fetch("/api/analytics", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body,
+      keepalive: true,
+    });
+  } catch {
+    // Swallow analytics errors to avoid affecting UX.
+  }
+}
+
+
+================================================================================
+FILE: src/lib/analytics/server.ts
+================================================================================
+import { consoleAnalyticsProvider } from "./providers/consoleProvider";
+import { webhookAnalyticsProvider } from "./providers/webhookProvider";
+import { AnalyticsEvent, AnalyticsProvider } from "./types";
+
+function getProviders(): AnalyticsProvider[] {
+  const mode = process.env.ANALYTICS_PROVIDER ?? "console";
+
+  if (mode === "webhook") {
+    return webhookAnalyticsProvider ? [webhookAnalyticsProvider] : [consoleAnalyticsProvider];
+  }
+
+  if (mode === "both") {
+    return webhookAnalyticsProvider
+      ? [consoleAnalyticsProvider, webhookAnalyticsProvider]
+      : [consoleAnalyticsProvider];
+  }
+
+  return [consoleAnalyticsProvider];
+}
+
+export async function trackServerEvent(event: AnalyticsEvent) {
+  const fullEvent: AnalyticsEvent = {
+    ...event,
+    timestamp: event.timestamp ?? new Date().toISOString(),
+  };
+
+  for (const provider of getProviders()) {
+    try {
+      await provider.send(fullEvent);
+    } catch (error) {
+      console.error(`[analytics:${provider.name}] failed`, error);
+    }
+  }
+}
+
+
+================================================================================
+FILE: src/lib/analytics/events.ts
+================================================================================
+"use client";
+
+import { trackClientEvent } from "./client";
+import { AnalyticsEventName } from "./types";
+
+export async function trackEvent(
+  event: AnalyticsEventName,
+  payload?: Record<string, unknown>,
+) {
+  await trackClientEvent({
+    name: event,
+    properties: payload,
+  });
+}
+
+
+================================================================================
+FILE: src/lib/analytics/providers/consoleProvider.ts
+================================================================================
+import { AnalyticsProvider } from "../types";
+
+export const consoleAnalyticsProvider: AnalyticsProvider = {
+  name: "console",
+  async send(event) {
+    if (process.env.NODE_ENV !== "production" || process.env.ANALYTICS_CONSOLE_LOGS === "true") {
+      console.info("[analytics:console]", event);
+    }
+  },
+};
+
+
+================================================================================
+FILE: src/lib/analytics/providers/webhookProvider.ts
+================================================================================
+import { AnalyticsProvider } from "../types";
+
+const webhookUrl = process.env.ANALYTICS_WEBHOOK_URL;
+
+export const webhookAnalyticsProvider: AnalyticsProvider | null = webhookUrl
+  ? {
+      name: "webhook",
+      async send(event) {
+        await fetch(webhookUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Analytics-Source": "operator-os-site-v2",
+          },
+          body: JSON.stringify(event),
+        });
+      },
+    }
+  : null;
+
+
+================================================================================
+FILE: src/lib/diagnostic.ts
+================================================================================
+import { getDiagnosticConfig } from "@/lib/content";
+
+export type DiagnosticAnswerMap = Record<string, number>;
+
+export type DiagnosticResult = {
+  totalScore: number;
+  maxScore: number;
+  maturityTierId: string;
+  maturityTierLabel: string;
+  recommendedPath: string;
+  recommendedProductSlug: string;
+  recommendedFreeToolSlug: string;
+  next7DayAction: string;
+};
+
+export async function scoreDiagnostic(answers: DiagnosticAnswerMap): Promise<DiagnosticResult> {
+  const config = await getDiagnosticConfig();
+
+  const totalScore = config.questions.reduce((sum, question) => {
+    const value = answers[question.id];
+    if (typeof value !== "number") {
+      return sum;
+    }
+    const safeScore = Math.max(0, Math.min(3, Math.floor(value)));
+    return sum + safeScore;
+  }, 0);
+
+  const maxScore = config.questions.length * 3;
+
+  const tier =
+    config.tiers.find(
+      (item) => totalScore >= item.minScore && totalScore <= item.maxScore,
+    ) ?? config.tiers[0];
+
+  return {
+    totalScore,
+    maxScore,
+    maturityTierId: tier.id,
+    maturityTierLabel: tier.label,
+    recommendedPath: tier.recommendedPath,
+    recommendedProductSlug: tier.recommendedProductSlug,
+    recommendedFreeToolSlug: tier.recommendedFreeToolSlug,
+    next7DayAction: tier.next7DayAction,
+  };
+}
+
+
+================================================================================
+FILE: src/lib/validation.ts
+================================================================================
+export function isNonEmptyString(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+export function isValidEmail(value: unknown): value is string {
+  if (typeof value !== "string") {
+    return false;
+  }
+
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
+export function normalizeString(value: unknown) {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+export function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+
+================================================================================
+FILE: content/site-config.json
+================================================================================
+{
+  "name": "Operator OS",
+  "tagline": "Plug-and-play systems for solo operators.",
+  "description": "Save 5–10 hours a week with practical templates, workflows, and AI-assisted operating systems that help you ship consistently.",
+  "nav": [
+    { "label": "Get Started", "href": "/get-started" },
+    { "label": "Free Tools", "href": "/free-tools" },
+    { "label": "Templates", "href": "/templates" },
+    { "label": "Playbooks", "href": "/playbooks" },
+    { "label": "Articles", "href": "/articles" },
+    { "label": "About", "href": "/about" },
+    { "label": "Contact", "href": "/contact" }
+  ],
+  "quickActions": [
+    "Fix Workflow Chaos",
+    "Save 5 Hours This Week",
+    "Build Your Weekly System",
+    "Simplify Your Tool Stack",
+    "Install Better SOPs",
+    "Start With Free Tools"
+  ],
+  "systemLayers": [
+    {
+      "title": "Capture",
+      "description": "Collect incoming tasks, notes, and requests in one trusted inbox."
+    },
+    {
+      "title": "Prioritize",
+      "description": "Turn noise into a weekly plan with clear priorities and constraints."
+    },
+    {
+      "title": "Execute",
+      "description": "Run repeatable workflows with SOPs, prompts, and focused blocks."
+    },
+    {
+      "title": "Review",
+      "description": "Close loops weekly, clean loose ends, and refine your operating rhythm."
+    },
+    {
+      "title": "Scale",
+      "description": "Package winning workflows into systems you can delegate or automate."
+    }
+  ],
+  "trustBar": [
+    "Built for solo operators",
+    "Practical systems, not hype",
+    "Templates, SOPs, and execution workflows"
+  ],
+  "newsletter": {
+    "title": "Get One Practical System Every Week",
+    "description": "Join the list for grounded workflows, templates, and operator-grade productivity systems.",
+    "placeholder": "you@business.com",
+    "buttonLabel": "Join Free"
+  }
+}
+
+
+================================================================================
+FILE: content/products.json
+================================================================================
+[
+  {
+    "slug": "starter-template-pack",
+    "name": "Starter Template Pack",
+    "audience": "For solo operators who need fast structure",
+    "outcome": "Start executing with less friction this week",
+    "includes": ["Core weekly planner", "Task triage template", "Meeting note framework"],
+    "summary": "Install an immediate baseline operating system in one focused afternoon.",
+    "priceLabel": "Entry-level",
+    "primaryCta": { "label": "Get Started with Starter Pack", "href": "/contact?intent=starter-template-pack" }
+  },
+  {
+    "slug": "sop-prompt-pack",
+    "name": "SOP + Prompt Pack",
+    "audience": "For freelancers and consultants standardizing delivery",
+    "outcome": "Reduce context-switching and rewrite work",
+    "includes": ["Client comms SOPs", "Prompt workflows", "Delivery checklists"],
+    "summary": "Document recurring work and pair it with prompts that improve execution quality.",
+    "priceLabel": "Growth",
+    "primaryCta": { "label": "Explore SOP + Prompt Pack", "href": "/contact?intent=sop-prompt-pack" }
+  },
+  {
+    "slug": "complete-operator-os-bundle",
+    "name": "Complete Operator OS Bundle",
+    "audience": "For operators building a full execution system",
+    "outcome": "Operate consistently across planning, delivery, and review",
+    "includes": ["Full template library", "Operator playbooks", "Implementation roadmap"],
+    "summary": "A full-stack operating system for weekly execution, client delivery, and team handoff readiness.",
+    "priceLabel": "Core Offer",
+    "primaryCta": { "label": "View Complete Bundle", "href": "/contact?intent=complete-operator-os-bundle" }
+  },
+  {
+    "slug": "30-day-implementation-program",
+    "name": "30-Day Implementation Program",
+    "audience": "For owners who want guided implementation",
+    "outcome": "Install your operating system in 30 days",
+    "includes": ["Week-by-week milestones", "Guided setup", "Accountability checkpoints"],
+    "summary": "Hands-on implementation support so your system is installed, used, and maintained quickly.",
+    "priceLabel": "Premium",
+    "primaryCta": { "label": "Apply for the Program", "href": "/contact?intent=30-day-implementation-program" }
+  }
+]
+
+
+================================================================================
+FILE: content/free-tools.json
+================================================================================
+[
+  {
+    "slug": "ops-diagnostic",
+    "name": "Ops Diagnostic",
+    "description": "A 3-minute assessment to identify your workflow maturity and next best move.",
+    "delivery": "On-page instant result",
+    "benefit": "Get a practical starting path with a 7-day action plan.",
+    "primaryCta": { "label": "Take Diagnostic", "href": "/get-started" }
+  },
+  {
+    "slug": "weekly-workflow-checklist",
+    "name": "Weekly Workflow Checklist",
+    "description": "A one-page checklist to run planning, execution, and weekly review without drift.",
+    "delivery": "Email delivery",
+    "benefit": "Reduce planning overhead and stop reactive task switching.",
+    "primaryCta": { "label": "Request Checklist", "href": "/free-tools/weekly-workflow-checklist" }
+  },
+  {
+    "slug": "meeting-notes-sop",
+    "name": "Meeting Notes SOP",
+    "description": "A note-to-action SOP so meetings produce assigned next steps.",
+    "delivery": "Email delivery",
+    "benefit": "Turn notes into execution in under 10 minutes after each call.",
+    "primaryCta": { "label": "Request SOP", "href": "/free-tools/meeting-notes-sop" }
+  },
+  {
+    "slug": "weekly-review-template",
+    "name": "Weekly Review Template",
+    "description": "A practical template to close loops and plan the next week with clarity.",
+    "delivery": "Email delivery",
+    "benefit": "Keep priorities current and prevent hidden backlog growth.",
+    "primaryCta": { "label": "Request Template", "href": "/free-tools/weekly-review-template" }
+  },
+  {
+    "slug": "content-planning-board",
+    "name": "Content Planning Board",
+    "description": "A simple planning board for weekly content production and promotion.",
+    "delivery": "Email delivery",
+    "benefit": "Publish consistently without rebuilding your process every week.",
+    "primaryCta": { "label": "Request Board", "href": "/free-tools/content-planning-board" }
+  },
+  {
+    "slug": "client-follow-up-sop",
+    "name": "Client Follow-Up SOP",
+    "description": "A repeatable communication cadence for active clients and warm leads.",
+    "delivery": "Email delivery",
+    "benefit": "Improve response consistency and reduce revenue leakage.",
+    "primaryCta": { "label": "Request SOP", "href": "/free-tools/client-follow-up-sop" }
+  },
+  {
+    "slug": "tool-stack-audit-checklist",
+    "name": "Tool Stack Audit Checklist",
+    "description": "A scoring checklist to simplify your app stack and remove redundant tools.",
+    "delivery": "Email delivery",
+    "benefit": "Lower complexity and reduce context switching across systems.",
+    "primaryCta": { "label": "Request Checklist", "href": "/free-tools/tool-stack-audit-checklist" }
+  }
+]
+
+
+================================================================================
+FILE: content/articles.json
+================================================================================
+[
+  {
+    "slug": "45-minute-weekly-reset",
+    "title": "The 45-Minute Weekly Reset for Solo Operators",
+    "category": "Weekly Planning",
+    "excerpt": "A practical cadence to clear bottlenecks and plan your highest-leverage work.",
+    "readTime": "6 min",
+    "body": [
+      "Start with a hard stop on open loops: unanswered messages, unassigned tasks, and draft commitments.",
+      "Then pick your top three outcomes for the next week and map them to specific execution blocks.",
+      "End by identifying one workflow bottleneck and one process improvement for next week."
+    ],
+    "primaryCta": { "label": "Take the Ops Diagnostic", "href": "/get-started" }
+  },
+  {
+    "slug": "sops-you-will-reuse",
+    "title": "How to Build SOPs You’ll Actually Reuse",
+    "category": "SOP Design",
+    "excerpt": "A straightforward method for writing SOPs that are clear, short, and usable.",
+    "readTime": "7 min",
+    "body": [
+      "SOPs fail when they are too long, too abstract, or detached from real tools.",
+      "Write steps at decision points, not every click. Include sample outputs and edge cases.",
+      "Review SOPs after 2-3 executions and trim anything no one actually uses."
+    ],
+    "primaryCta": { "label": "Explore SOP + Prompt Pack", "href": "/products/sop-prompt-pack" }
+  },
+  {
+    "slug": "tool-overload-to-one-stack",
+    "title": "From Tool Overload to One Operating Stack",
+    "category": "Workflow Design",
+    "excerpt": "Use this decision framework to cut redundant apps and simplify your workflow.",
+    "readTime": "5 min",
+    "body": [
+      "List all current tools by workflow stage: capture, plan, execute, review.",
+      "For each stage, keep one primary source of truth and one optional specialist tool.",
+      "Migrate active projects first and archive legacy systems with a clear freeze date."
+    ],
+    "primaryCta": { "label": "Use the Tool Stack Audit Checklist", "href": "/free-tools/tool-stack-audit-checklist" }
+  },
+  {
+    "slug": "ai-prompts-for-execution",
+    "title": "AI Prompts That Improve Execution, Not Just Ideas",
+    "category": "AI for Execution",
+    "excerpt": "Prompt patterns designed for planning, handoffs, and follow-through.",
+    "readTime": "8 min",
+    "body": [
+      "Use prompts to reduce ambiguity in weekly plans, handoffs, and client updates.",
+      "Design prompts around deliverables and deadlines rather than brainstorming alone.",
+      "Track which prompts improve cycle time and standardize the winners into SOPs."
+    ],
+    "primaryCta": { "label": "View Complete Bundle", "href": "/products/complete-operator-os-bundle" }
+  },
+  {
+    "slug": "solo-operator-planning-system",
+    "title": "The Solo Operator Planning System (Capture → Execute)",
+    "category": "Productivity Systems",
+    "excerpt": "A complete operating loop for running projects without daily chaos.",
+    "readTime": "9 min",
+    "body": [
+      "Capture all incoming requests into one intake layer, not scattered inboxes.",
+      "Convert requests into a weekly plan with constraints and realistic throughput.",
+      "Review outcomes every week and evolve one small part of the system at a time."
+    ],
+    "primaryCta": { "label": "Take the Ops Diagnostic", "href": "/get-started" }
+  },
+  {
+    "slug": "client-delivery-playbook",
+    "title": "Client Delivery Playbook: Keep Work Moving Every Week",
+    "category": "Solo Operator Playbooks",
+    "excerpt": "A repeatable playbook for managing scope, updates, and delivery rhythm.",
+    "readTime": "7 min",
+    "body": [
+      "Define weekly client update windows and reuse one update template every cycle.",
+      "Pair each deliverable with owner, due date, and next verification checkpoint.",
+      "Escalate blockers in 24 hours and document decisions directly in project context."
+    ],
+    "primaryCta": { "label": "View Playbooks", "href": "/playbooks" }
+  }
+]
+
+
+================================================================================
+FILE: content/playbooks.json
+================================================================================
+[
+  {
+    "slug": "30-day-operator-system-setup",
+    "title": "30-Day Operator System Setup",
+    "description": "Install a working planning-to-delivery operating system in four weekly phases.",
+    "milestones": ["Week 1: Capture + Prioritize", "Week 2: SOP Baseline", "Week 3: Delivery Rhythm", "Week 4: Review + Optimization"],
+    "primaryCta": { "label": "Book Implementation Support", "href": "/contact?intent=30-day-operator-system-setup" }
+  },
+  {
+    "slug": "client-onboarding-workflow-playbook",
+    "title": "Client Onboarding Workflow Playbook",
+    "description": "Standardize onboarding from signed agreement to kickoff delivery plan.",
+    "milestones": ["Intake checklist", "Kickoff agenda", "Timeline handoff", "First-week communication cadence"],
+    "primaryCta": { "label": "Get SOP + Prompt Pack", "href": "/products/sop-prompt-pack" }
+  },
+  {
+    "slug": "weekly-review-planning-playbook",
+    "title": "Weekly Review + Planning Playbook",
+    "description": "A repeatable weekly process for closing loops and selecting high-leverage priorities.",
+    "milestones": ["Review outcomes", "Score bottlenecks", "Select top priorities", "Block calendar"],
+    "primaryCta": { "label": "Take the Ops Diagnostic", "href": "/get-started" }
+  },
+  {
+    "slug": "sop-documentation-sprint",
+    "title": "SOP Documentation Sprint",
+    "description": "Capture your highest-friction recurring workflows in a focused sprint.",
+    "milestones": ["Workflow inventory", "Top 5 SOPs", "Execution testing", "Team handoff readiness"],
+    "primaryCta": { "label": "Explore SOP + Prompt Pack", "href": "/products/sop-prompt-pack" }
+  }
+]
+
+
+================================================================================
+FILE: content/templates.json
+================================================================================
+[
+  { "slug": "weekly-planning-template", "name": "Weekly Planning Template", "description": "Plan priorities, constraints, and execution blocks for the week." },
+  { "slug": "client-delivery-tracker", "name": "Client Delivery Tracker", "description": "Track deliverables, owners, due dates, and status." },
+  { "slug": "content-operating-board", "name": "Content Operating Board", "description": "Coordinate topic pipeline, production, and distribution." },
+  { "slug": "task-triage-board", "name": "Task Triage Board", "description": "Sort incoming work by urgency, leverage, and owner." },
+  { "slug": "review-retrospective-template", "name": "Review + Retrospective Template", "description": "Run quick weekly review loops and identify improvements." },
+  { "slug": "follow-up-system-tracker", "name": "Follow-Up System Tracker", "description": "Keep lead/client follow-ups predictable and timely." }
+]
+
+
+================================================================================
+FILE: content/testimonials.json
+================================================================================
+{
+  "mode": "coming-soon",
+  "title": "What Operators Say",
+  "subtitle": "We only publish verified outcomes. Public case studies and customer proof are being prepared.",
+  "comingSoonMessage": "Customer proof coming soon — currently onboarding early implementation partners.",
+  "founderNote": {
+    "heading": "Founder note",
+    "body": "Operator OS is intentionally practical: fewer moving parts, clearer workflows, and weekly execution you can trust. As customer stories are approved, they will be added here with measurable before/after outcomes."
+  },
+  "items": []
+}
+
+
+================================================================================
+FILE: content/diagnostic-questions.json
+================================================================================
+{
+  "questions": [
+    {
+      "id": "weeklyPlanning",
+      "prompt": "How consistently do you run a weekly planning session?",
+      "options": [
+        { "label": "Almost never", "score": 0 },
+        { "label": "1-2 times per month", "score": 1 },
+        { "label": "Most weeks", "score": 2 },
+        { "label": "Every week with clear priorities", "score": 3 }
+      ]
+    },
+    {
+      "id": "sopCoverage",
+      "prompt": "How documented are your recurring workflows?",
+      "options": [
+        { "label": "Not documented", "score": 0 },
+        { "label": "A few rough notes", "score": 1 },
+        { "label": "Core workflows documented", "score": 2 },
+        { "label": "Most recurring work has SOPs", "score": 3 }
+      ]
+    },
+    {
+      "id": "taskSystem",
+      "prompt": "How centralized is your task/project tracking?",
+      "options": [
+        { "label": "Scattered across tools", "score": 0 },
+        { "label": "Partially centralized", "score": 1 },
+        { "label": "Mostly centralized", "score": 2 },
+        { "label": "One trusted source of truth", "score": 3 }
+      ]
+    },
+    {
+      "id": "reviewCadence",
+      "prompt": "How often do you review completed work and bottlenecks?",
+      "options": [
+        { "label": "Rarely", "score": 0 },
+        { "label": "Occasionally", "score": 1 },
+        { "label": "Most weeks", "score": 2 },
+        { "label": "Weekly with measurable adjustments", "score": 3 }
+      ]
+    },
+    {
+      "id": "automationReadiness",
+      "prompt": "How ready are your workflows for delegation/automation?",
+      "options": [
+        { "label": "Not ready", "score": 0 },
+        { "label": "Some repeatable pieces", "score": 1 },
+        { "label": "Several workflows ready", "score": 2 },
+        { "label": "Most workflows are standardized", "score": 3 }
+      ]
+    }
+  ],
+  "tiers": [
+    {
+      "id": "foundation",
+      "label": "Foundation",
+      "minScore": 0,
+      "maxScore": 5,
+      "recommendedPath": "Start with a lightweight weekly operating baseline.",
+      "recommendedProductSlug": "starter-template-pack",
+      "recommendedFreeToolSlug": "weekly-workflow-checklist",
+      "next7DayAction": "Run one 45-minute weekly reset, centralize incoming tasks, and complete the weekly checklist once."
+    },
+    {
+      "id": "stabilizing",
+      "label": "Stabilizing",
+      "minScore": 6,
+      "maxScore": 10,
+      "recommendedPath": "Document your top recurring workflows and reduce tool fragmentation.",
+      "recommendedProductSlug": "sop-prompt-pack",
+      "recommendedFreeToolSlug": "meeting-notes-sop",
+      "next7DayAction": "Document 2 SOPs for recurring work and apply one prompt workflow to a live project."
+    },
+    {
+      "id": "scaling",
+      "label": "Scaling",
+      "minScore": 11,
+      "maxScore": 15,
+      "recommendedPath": "Systematize planning, delivery, and review into one repeatable operating loop.",
+      "recommendedProductSlug": "complete-operator-os-bundle",
+      "recommendedFreeToolSlug": "tool-stack-audit-checklist",
+      "next7DayAction": "Run a full weekly planning + review cycle and remove one redundant workflow tool."
+    }
+  ]
+}
+

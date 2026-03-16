@@ -1,0 +1,86 @@
+{
+  "questions": [
+    {
+      "id": "weeklyPlanning",
+      "prompt": "How consistently do you run a weekly planning session?",
+      "options": [
+        { "label": "Almost never", "score": 0 },
+        { "label": "1-2 times per month", "score": 1 },
+        { "label": "Most weeks", "score": 2 },
+        { "label": "Every week with clear priorities", "score": 3 }
+      ]
+    },
+    {
+      "id": "sopCoverage",
+      "prompt": "How documented are your recurring workflows?",
+      "options": [
+        { "label": "Not documented", "score": 0 },
+        { "label": "A few rough notes", "score": 1 },
+        { "label": "Core workflows documented", "score": 2 },
+        { "label": "Most recurring work has SOPs", "score": 3 }
+      ]
+    },
+    {
+      "id": "taskSystem",
+      "prompt": "How centralized is your task/project tracking?",
+      "options": [
+        { "label": "Scattered across tools", "score": 0 },
+        { "label": "Partially centralized", "score": 1 },
+        { "label": "Mostly centralized", "score": 2 },
+        { "label": "One trusted source of truth", "score": 3 }
+      ]
+    },
+    {
+      "id": "reviewCadence",
+      "prompt": "How often do you review completed work and bottlenecks?",
+      "options": [
+        { "label": "Rarely", "score": 0 },
+        { "label": "Occasionally", "score": 1 },
+        { "label": "Most weeks", "score": 2 },
+        { "label": "Weekly with measurable adjustments", "score": 3 }
+      ]
+    },
+    {
+      "id": "automationReadiness",
+      "prompt": "How ready are your workflows for delegation/automation?",
+      "options": [
+        { "label": "Not ready", "score": 0 },
+        { "label": "Some repeatable pieces", "score": 1 },
+        { "label": "Several workflows ready", "score": 2 },
+        { "label": "Most workflows are standardized", "score": 3 }
+      ]
+    }
+  ],
+  "tiers": [
+    {
+      "id": "foundation",
+      "label": "Foundation",
+      "minScore": 0,
+      "maxScore": 5,
+      "recommendedPath": "Start with a lightweight weekly operating baseline.",
+      "recommendedProductSlug": "starter-template-pack",
+      "recommendedFreeToolSlug": "weekly-workflow-checklist",
+      "next7DayAction": "Run one 45-minute weekly reset, centralize incoming tasks, and complete the weekly checklist once."
+    },
+    {
+      "id": "stabilizing",
+      "label": "Stabilizing",
+      "minScore": 6,
+      "maxScore": 10,
+      "recommendedPath": "Document your top recurring workflows and reduce tool fragmentation.",
+      "recommendedProductSlug": "sop-prompt-pack",
+      "recommendedFreeToolSlug": "meeting-notes-sop",
+      "next7DayAction": "Document 2 SOPs for recurring work and apply one prompt workflow to a live project."
+    },
+    {
+      "id": "scaling",
+      "label": "Scaling",
+      "minScore": 11,
+      "maxScore": 15,
+      "recommendedPath": "Systematize planning, delivery, and review into one repeatable operating loop.",
+      "recommendedProductSlug": "complete-operator-os-bundle",
+      "recommendedFreeToolSlug": "tool-stack-audit-checklist",
+      "next7DayAction": "Run a full weekly planning + review cycle and remove one redundant workflow tool."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+[
+  {
+    "slug": "ops-diagnostic",
+    "name": "Workflow Diagnostic",
+    "description": "A 3-minute assessment to identify your workflow maturity and next best move.",
+    "delivery": "On-page instant result",
+    "benefit": "Get a practical starting path with a 7-day action plan.",
+    "primaryCta": {
+      "label": "Run Diagnostic",
+      "href": "/get-started"
+    }
+  },
+  {
+    "slug": "weekly-workflow-checklist",
+    "name": "Weekly Workflow Checklist",
+    "description": "A one-page checklist to run planning, execution, and weekly review without drift.",
+    "delivery": "Email delivery",
+    "benefit": "Reduce planning overhead and stop reactive task switching.",
+    "primaryCta": {
+      "label": "Request Checklist",
+      "href": "/free-tools/weekly-workflow-checklist"
+    }
+  },
+  {
+    "slug": "meeting-notes-sop",
+    "name": "Meeting Notes SOP",
+    "description": "A note-to-action SOP so meetings produce assigned next steps.",
+    "delivery": "Email delivery",
+    "benefit": "Turn notes into execution in under 10 minutes after each call.",
+    "primaryCta": {
+      "label": "Request SOP",
+      "href": "/free-tools/meeting-notes-sop"
+    }
+  },
+  {
+    "slug": "weekly-review-template",
+    "name": "Weekly Review Template",
+    "description": "A practical template to close loops and plan the next week with clarity.",
+    "delivery": "Email delivery",
+    "benefit": "Keep priorities current and prevent hidden backlog growth.",
+    "primaryCta": {
+      "label": "Request Template",
+      "href": "/free-tools/weekly-review-template"
+    }
+  },
+  {
+    "slug": "content-planning-board",
+    "name": "Content Planning Board",
+    "description": "A simple planning board for weekly content production and promotion.",
+    "delivery": "Email delivery",
+    "benefit": "Publish consistently without rebuilding your process every week.",
+    "primaryCta": {
+      "label": "Request Board",
+      "href": "/free-tools/content-planning-board"
+    }
+  },
+  {
+    "slug": "client-follow-up-sop",
+    "name": "Client Follow-Up SOP",
+    "description": "A repeatable communication cadence for active clients and warm leads.",
+    "delivery": "Email delivery",
+    "benefit": "Improve response consistency and reduce revenue leakage.",
+    "primaryCta": {
+      "label": "Request SOP",
+      "href": "/free-tools/client-follow-up-sop"
+    }
+  },
+  {
+    "slug": "tool-stack-audit-checklist",
+    "name": "Tool Stack Audit Checklist",
+    "description": "A scoring checklist to simplify your app stack and remove redundant tools.",
+    "delivery": "Email delivery",
+    "benefit": "Lower complexity and reduce context switching across systems.",
+    "primaryCta": {
+      "label": "Request Checklist",
+      "href": "/free-tools/tool-stack-audit-checklist"
+    }
+  }
+]

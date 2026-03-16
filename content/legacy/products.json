@@ -1,0 +1,70 @@
+[
+  {
+    "slug": "starter-template-pack",
+    "name": "Starter Template Pack",
+    "audience": "For solo operators who need fast structure",
+    "outcome": "Start executing with less friction this week",
+    "includes": [
+      "Core weekly planner",
+      "Task triage template",
+      "Meeting note framework"
+    ],
+    "summary": "Install an immediate baseline operating system in one focused afternoon.",
+    "priceLabel": "Entry-level",
+    "primaryCta": {
+      "label": "Get Started with Starter Pack",
+      "href": "/contact?intent=starter-template-pack"
+    }
+  },
+  {
+    "slug": "sop-prompt-pack",
+    "name": "SOP + Prompt Pack",
+    "audience": "For freelancers and consultants standardizing delivery",
+    "outcome": "Reduce context-switching and rewrite work",
+    "includes": [
+      "Client comms SOPs",
+      "Prompt workflows",
+      "Delivery checklists"
+    ],
+    "summary": "Document recurring work and pair it with prompts that improve execution quality.",
+    "priceLabel": "Growth",
+    "primaryCta": {
+      "label": "Explore SOP + Prompt Pack",
+      "href": "/contact?intent=sop-prompt-pack"
+    }
+  },
+  {
+    "slug": "complete-operator-os-bundle",
+    "name": "Complete CogniFox Systems Bundle",
+    "audience": "For operators building a complete execution system",
+    "outcome": "Operate consistently across planning, delivery, and review",
+    "includes": [
+      "Full template library",
+      "Execution playbooks",
+      "Implementation roadmap"
+    ],
+    "summary": "A full-stack system for weekly execution, client delivery, and team handoff readiness.",
+    "priceLabel": "Core Offer",
+    "primaryCta": {
+      "label": "View Complete Bundle",
+      "href": "/contact?intent=complete-operator-os-bundle"
+    }
+  },
+  {
+    "slug": "30-day-implementation-program",
+    "name": "30-Day Implementation Program",
+    "audience": "For owners who want guided implementation",
+    "outcome": "Install your operating system in 30 days",
+    "includes": [
+      "Week-by-week milestones",
+      "Guided setup",
+      "Accountability checkpoints"
+    ],
+    "summary": "Hands-on implementation support so your system is installed, used, and maintained quickly.",
+    "priceLabel": "Premium",
+    "primaryCta": {
+      "label": "Apply for the Program",
+      "href": "/contact?intent=30-day-implementation-program"
+    }
+  }
+]

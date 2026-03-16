@@ -1,0 +1,8 @@
+[
+  { "slug": "weekly-planning-template", "name": "Weekly Planning Template", "description": "Plan priorities, constraints, and execution blocks for the week." },
+  { "slug": "client-delivery-tracker", "name": "Client Delivery Tracker", "description": "Track deliverables, owners, due dates, and status." },
+  { "slug": "content-operating-board", "name": "Content Operating Board", "description": "Coordinate topic pipeline, production, and distribution." },
+  { "slug": "task-triage-board", "name": "Task Triage Board", "description": "Sort incoming work by urgency, leverage, and owner." },
+  { "slug": "review-retrospective-template", "name": "Review + Retrospective Template", "description": "Run quick weekly review loops and identify improvements." },
+  { "slug": "follow-up-system-tracker", "name": "Follow-Up System Tracker", "description": "Keep lead/client follow-ups predictable and timely." }
+]

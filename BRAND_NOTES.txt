@@ -1,0 +1,28 @@
+CogniFox – Brand/COPY Notes (V5)
+
+Positioning
+- Practical AI workflows for operators
+- OpenClaw-powered execution examples
+- Concrete > broad marketing claims
+
+Core audience
+- Solo operators
+- Consultants/freelancers
+- Founders and small teams
+
+Public scope
+- Blog
+- Agent Projects
+- Use Cases
+- Chatbot (beta preview)
+- About + Contact
+
+Voice principles
+- Clear and grounded
+- Actionable and specific
+- Honest about limits (especially chatbot + automation boundaries)
+
+Messaging guardrails
+- Do not present chatbot as universal intelligence
+- Do not imply fully autonomous operations without human review
+- Avoid inflated claims; prefer real workflow details and constraints

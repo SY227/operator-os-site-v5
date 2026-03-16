@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "30-day-operator-system-setup",
+    "title": "30-Day Operator System Setup",
+    "description": "Install a working planning-to-delivery operating system in four weekly phases.",
+    "milestones": [
+      "Week 1: Capture + Prioritize",
+      "Week 2: SOP Baseline",
+      "Week 3: Delivery Rhythm",
+      "Week 4: Review + Optimization"
+    ],
+    "primaryCta": {
+      "label": "Book Implementation Support",
+      "href": "/contact?intent=30-day-operator-system-setup"
+    }
+  },
+  {
+    "slug": "client-onboarding-workflow-playbook",
+    "title": "Client Onboarding Workflow Playbook",
+    "description": "Standardize onboarding from signed agreement to kickoff delivery plan.",
+    "milestones": [
+      "Intake checklist",
+      "Kickoff agenda",
+      "Timeline handoff",
+      "First-week communication cadence"
+    ],
+    "primaryCta": {
+      "label": "Get SOP + Prompt Pack",
+      "href": "/products/sop-prompt-pack"
+    }
+  },
+  {
+    "slug": "weekly-review-planning-playbook",
+    "title": "Weekly Review + Planning Playbook",
+    "description": "A repeatable weekly process for closing loops and selecting high-leverage priorities.",
+    "milestones": [
+      "Review outcomes",
+      "Score bottlenecks",
+      "Select top priorities",
+      "Block calendar"
+    ],
+    "primaryCta": {
+      "label": "Run the Workflow Diagnostic",
+      "href": "/get-started"
+    }
+  },
+  {
+    "slug": "sop-documentation-sprint",
+    "title": "SOP Documentation Sprint",
+    "description": "Capture your highest-friction recurring workflows in a focused sprint.",
+    "milestones": [
+      "Workflow inventory",
+      "Top 5 SOPs",
+      "Execution testing",
+      "Team handoff readiness"
+    ],
+    "primaryCta": {
+      "label": "Explore SOP + Prompt Pack",
+      "href": "/products/sop-prompt-pack"
+    }
+  }
+]

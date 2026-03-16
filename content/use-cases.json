@@ -1,0 +1,122 @@
+[
+  {
+    "slug": "content-publishing-ops",
+    "title": "Content publishing operations",
+    "audience": "Solo founders, consultants, and lean marketing teams",
+    "summary": "Build a repeatable weekly publishing cycle without a full editorial department.",
+    "challenge": "Ideas pile up but publishing slips because drafting, reviewing, and scheduling are fragmented.",
+    "workflow": [
+      "Capture weekly content ideas and prioritize by business relevance.",
+      "Generate first drafts from structured prompts.",
+      "Run review checklist for clarity, claims, and CTA alignment.",
+      "Publish and queue distribution tasks with owners."
+    ],
+    "outcomes": [
+      "More consistent publishing cadence",
+      "Lower editorial coordination overhead",
+      "Higher confidence in what gets shipped"
+    ],
+    "openclawRole": "Runs first-pass drafting, checklist automation, and publish queue coordination.",
+    "humanReview": "Final editorial decisions, factual verification, and message prioritization."
+  },
+  {
+    "slug": "lead-qualification-routing",
+    "title": "Lead qualification and routing",
+    "audience": "Service businesses and small sales teams",
+    "summary": "Respond faster to inbound leads while preserving quality and context.",
+    "challenge": "Inbound leads are inconsistently triaged, causing slow response times and missed opportunities.",
+    "workflow": [
+      "Collect lead submissions from forms and inbox channels.",
+      "Apply qualification criteria and confidence scoring.",
+      "Generate lead summary with recommended next action.",
+      "Route to priority queue and follow-up cadence."
+    ],
+    "outcomes": [
+      "Faster first response time",
+      "Cleaner pipeline visibility",
+      "Reduced lead leakage"
+    ],
+    "openclawRole": "Scores leads, drafts summaries, and maintains follow-up reminders.",
+    "humanReview": "Approves high-value lead decisions and custom strategic responses."
+  },
+  {
+    "slug": "recurring-market-research",
+    "title": "Recurring market research briefs",
+    "audience": "Founders, product operators, and strategy teams",
+    "summary": "Turn scattered market monitoring into a reliable weekly intelligence loop.",
+    "challenge": "Research is inconsistent and too noisy to guide active strategic decisions.",
+    "workflow": [
+      "Monitor predefined competitor and market sources.",
+      "Normalize updates into one briefing format.",
+      "Highlight trend shifts and notable anomalies.",
+      "Propose action options and route to decision owners."
+    ],
+    "outcomes": [
+      "Clearer strategic visibility",
+      "Faster response to market shifts",
+      "Reduced manual synthesis time"
+    ],
+    "openclawRole": "Collects sources, drafts weekly brief, and flags unusual movement.",
+    "humanReview": "Validates strategic implications and approves action recommendations."
+  },
+  {
+    "slug": "internal-knowledge-retrieval",
+    "title": "Internal knowledge retrieval",
+    "audience": "Small teams with growing SOP/documentation libraries",
+    "summary": "Answer repeated internal questions from approved sources without constant interruption.",
+    "challenge": "Operational answers vary by person and teams lose time re-answering the same questions.",
+    "workflow": [
+      "Ingest approved SOPs and policy docs.",
+      "Map incoming questions to relevant source sections.",
+      "Return answer drafts with citations.",
+      "Escalate ambiguous or policy-sensitive questions."
+    ],
+    "outcomes": [
+      "Faster internal response time",
+      "More consistent process answers",
+      "Better documentation gap visibility"
+    ],
+    "openclawRole": "Provides first-pass cited answers and tracks unanswered patterns.",
+    "humanReview": "Approves sensitive policy guidance and documentation updates."
+  },
+  {
+    "slug": "weekly-reporting-automation",
+    "title": "Weekly reporting automation",
+    "audience": "Operators managing recurring KPI reporting",
+    "summary": "Ship stakeholder-ready weekly reports with less manual prep and fewer formatting errors.",
+    "challenge": "Teams spend too much time compiling recurring reports instead of acting on insights.",
+    "workflow": [
+      "Pull weekly KPI snapshots from source systems.",
+      "Normalize and compare against prior periods.",
+      "Draft summary narrative and anomaly notes.",
+      "Publish reviewed report to stakeholders."
+    ],
+    "outcomes": [
+      "Lower reporting overhead",
+      "More timely weekly reporting",
+      "Higher consistency across reporting cycles"
+    ],
+    "openclawRole": "Aggregates metrics, drafts summaries, and formats standardized report output.",
+    "humanReview": "Validates anomalies and final recommendations before distribution."
+  },
+  {
+    "slug": "customer-faq-assistant",
+    "title": "Customer FAQ handling",
+    "audience": "Support-lean teams handling repetitive inbound questions",
+    "summary": "Use a content-grounded assistant to handle repetitive FAQ traffic with clear escalation rules.",
+    "challenge": "Support answers are slow or inconsistent when common questions are handled manually each time.",
+    "workflow": [
+      "Build a verified FAQ/source knowledge set.",
+      "Answer common inbound questions from approved content.",
+      "Route unclear or sensitive requests to human support.",
+      "Track recurring unresolved questions to improve docs."
+    ],
+    "outcomes": [
+      "Faster response on repetitive questions",
+      "Consistent answer quality",
+      "Clear escalation for edge cases"
+    ],
+    "openclawRole": "Handles first-pass FAQ responses and surfaces source-backed answers.",
+    "humanReview": "Reviews escalations and updates policy-sensitive FAQ content."
+  }
+]

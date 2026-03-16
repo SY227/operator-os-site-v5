@@ -1,0 +1,53 @@
+{
+  "name": "CogniFox",
+  "domain": "cognifox.io",
+  "baseUrl": "https://cognifox.io",
+  "tagline": "OpenClaw-powered workflows, projects, and use cases for real operators.",
+  "description": "CogniFox is a focused launch site for practical AI operations: concrete blog posts, real agent project examples, operator use cases, and a content-grounded chatbot.",
+  "seo": {
+    "defaultTitle": "CogniFox | Practical AI workflows for operators",
+    "titleTemplate": "%s | CogniFox",
+    "defaultDescription": "Explore practical AI workflows, OpenClaw-managed agent projects, and concrete use cases for operators and small teams."
+  },
+  "nav": [
+    { "label": "Blog", "href": "/blog" },
+    { "label": "Projects", "href": "/projects" },
+    { "label": "Use Cases", "href": "/use-cases" },
+    { "label": "Chatbot", "href": "/chatbot" },
+    { "label": "About", "href": "/about" },
+    { "label": "Contact", "href": "/contact" }
+  ],
+  "headerCta": {
+    "label": "Ask CogniFox",
+    "href": "/chatbot"
+  },
+  "trustBar": [
+    "OpenClaw-powered publishing workflows",
+    "Concrete examples over AI hype",
+    "Built for solo operators and lean teams"
+  ],
+  "home": {
+    "featuredBlogSlugs": [
+      "openclaw-content-workflow",
+      "what-to-automate-first-small-team",
+      "ai-autonomy-human-review-boundary"
+    ],
+    "featuredProjectSlugs": [
+      "weekly-content-engine",
+      "competitor-research-briefing-agent",
+      "knowledge-base-qa-assistant"
+    ],
+    "featuredUseCaseSlugs": [
+      "content-publishing-ops",
+      "recurring-market-research",
+      "weekly-reporting-automation",
+      "customer-faq-assistant"
+    ]
+  },
+  "newsletter": {
+    "title": "Get practical operator workflows every week",
+    "description": "One actionable system, one concrete example, and one implementation lesson each week.",
+    "placeholder": "you@business.com",
+    "buttonLabel": "Join Free"
+  }
+}

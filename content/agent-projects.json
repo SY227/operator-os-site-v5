@@ -1,0 +1,152 @@
+[
+  {
+    "slug": "weekly-content-engine",
+    "name": "Weekly Content Engine Operator",
+    "summary": "A recurring content pipeline that turns raw ideas into publish-ready drafts and a weekly release queue.",
+    "problem": "Publishing cadence was inconsistent because ideation, drafting, and review lived across disconnected tools.",
+    "workflow": [
+      "Collect topic ideas from notes, meetings, and customer questions.",
+      "Cluster ideas by intent and priority for the week.",
+      "Generate first drafts in predefined post formats.",
+      "Run link/claim checks and hand draft to human editor.",
+      "Schedule approved posts and create a distribution checklist."
+    ],
+    "stack": ["OpenClaw", "Next.js content JSON", "Google Docs", "Notion backlog"],
+    "openclawRole": [
+      "Runs weekly topic triage.",
+      "Drafts first-pass articles.",
+      "Generates publishing checklist and reminder prompts."
+    ],
+    "humanReview": [
+      "Final editorial quality pass.",
+      "Fact-check and claim verification.",
+      "Priority decisions on what ships this week."
+    ],
+    "output": "A reliable weekly publishing batch with fewer missed deadlines and clearer editorial throughput.",
+    "lessons": [
+      "Consistency improved more from process clarity than model sophistication.",
+      "A strict editorial checklist prevented quality drift.",
+      "One owner for approvals reduced bottlenecks significantly."
+    ]
+  },
+  {
+    "slug": "competitor-research-briefing-agent",
+    "name": "Competitor Research Briefing Agent",
+    "summary": "A recurring intelligence workflow that produces weekly competitor movement briefs for decision-making.",
+    "problem": "Competitive intelligence was ad hoc, scattered, and too slow to influence active roadmap decisions.",
+    "workflow": [
+      "Track a fixed list of competitor sources and change signals.",
+      "Collect and normalize updates into one structured brief format.",
+      "Highlight significant deltas from prior week baselines.",
+      "Draft implications and candidate response actions.",
+      "Route brief to decision owners for review and prioritization."
+    ],
+    "stack": ["OpenClaw", "RSS + web sources", "Airtable", "Slack summaries"],
+    "openclawRole": [
+      "Collects and deduplicates source updates.",
+      "Drafts concise weekly competitor brief.",
+      "Flags unusual movement requiring manual inspection."
+    ],
+    "humanReview": [
+      "Validate strategic significance.",
+      "Approve action recommendations.",
+      "Add non-public context before stakeholder distribution."
+    ],
+    "output": "A weekly briefing cadence that improves reaction time without drowning teams in noisy updates.",
+    "lessons": [
+      "Template consistency matters more than breadth of sources.",
+      "Human context turns signals into strategy.",
+      "Trend comparisons improved confidence in prioritization."
+    ]
+  },
+  {
+    "slug": "lead-triage-assistant",
+    "name": "Lead Triage and Routing Assistant",
+    "summary": "A lead intake operator that classifies inbound requests and prepares context-rich follow-up queues.",
+    "problem": "Leads were being answered inconsistently, with slow response times and poor qualification context.",
+    "workflow": [
+      "Capture incoming leads from forms and inbox channels.",
+      "Score lead quality using predefined qualification rules.",
+      "Generate concise lead briefs with recommended next action.",
+      "Route qualified leads to priority queue with SLA tags.",
+      "Create follow-up reminders for stale or pending leads."
+    ],
+    "stack": ["OpenClaw", "Form APIs", "CRM webhook", "Shared follow-up board"],
+    "openclawRole": [
+      "Applies rule-based lead scoring.",
+      "Produces standardized intake summaries.",
+      "Schedules follow-up reminders and queue updates."
+    ],
+    "humanReview": [
+      "Final qualification for high-value opportunities.",
+      "Custom response drafting for strategic leads.",
+      "Policy checks for edge-case inbound messages."
+    ],
+    "output": "Faster first responses, cleaner pipeline visibility, and less lead leakage between inboxes.",
+    "lessons": [
+      "Clear scoring rules prevented random triage decisions.",
+      "SLA tags dramatically improved follow-up discipline.",
+      "High-value lead review should always stay human-owned."
+    ]
+  },
+  {
+    "slug": "recurring-report-generator",
+    "name": "Recurring KPI Report Generator",
+    "summary": "A weekly reporting agent that prepares stakeholder-ready summaries from operational data.",
+    "problem": "Weekly reporting consumed too much senior time and often shipped late or with inconsistent formatting.",
+    "workflow": [
+      "Pull KPI snapshots from defined sources.",
+      "Normalize numbers and compare against prior periods.",
+      "Draft executive summary with notable changes.",
+      "Highlight anomalies and unresolved data quality flags.",
+      "Publish report draft for owner approval."
+    ],
+    "stack": ["OpenClaw", "Google Sheets", "CSV exports", "Email delivery"],
+    "openclawRole": [
+      "Aggregates weekly KPI inputs.",
+      "Generates draft narrative for trend shifts.",
+      "Prepares standardized output format for stakeholders."
+    ],
+    "humanReview": [
+      "Validate data integrity on anomalies.",
+      "Approve final narrative and recommendations.",
+      "Decide escalation for underperforming metrics."
+    ],
+    "output": "Predictable reporting cadence with less manual overhead and clearer insight communication.",
+    "lessons": [
+      "Stable metric definitions are mandatory.",
+      "Automated drafts are strong, but anomaly interpretation must be human.",
+      "Stakeholder trust improved with consistent report structure."
+    ]
+  },
+  {
+    "slug": "knowledge-base-qa-assistant",
+    "name": "Knowledge Base Q&A Assistant",
+    "summary": "A content-grounded assistant that answers repeated internal questions from approved documentation.",
+    "problem": "Teams repeatedly asked the same process questions, and answers varied by who responded.",
+    "workflow": [
+      "Ingest approved documentation and SOP references.",
+      "Map questions to relevant sections and return cited answers.",
+      "Flag gaps where documentation is outdated or missing.",
+      "Route unresolved questions to designated owners.",
+      "Log unanswered patterns for documentation updates."
+    ],
+    "stack": ["OpenClaw", "Internal docs", "FAQ schema", "Support channel"],
+    "openclawRole": [
+      "Provides first-pass content-grounded answers.",
+      "Surfaces source links and confidence context.",
+      "Tracks repeated unanswered question patterns."
+    ],
+    "humanReview": [
+      "Review sensitive or policy-level responses.",
+      "Approve updates to source documentation.",
+      "Resolve ambiguous questions with business context."
+    ],
+    "output": "Faster internal response times and more consistent answers across recurring operational questions.",
+    "lessons": [
+      "Answer quality depends on documentation quality.",
+      "Citations increase trust and reduce misunderstandings.",
+      "Question logs are a powerful roadmap for SOP improvements."
+    ]
+  }
+]

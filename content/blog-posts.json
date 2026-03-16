@@ -1,0 +1,135 @@
+[
+  {
+    "slug": "openclaw-content-workflow",
+    "title": "How OpenClaw can run a practical content workflow end-to-end",
+    "category": "OpenClaw Workflows",
+    "excerpt": "A concrete workflow for turning one idea into a weekly publish cadence without relying on memory and hustle.",
+    "readTime": "8 min",
+    "publishedAt": "2026-03-01",
+    "body": [
+      "Most content workflows fail for one boring reason: there is no operating loop. Ideas live in one tool, drafts in another, approvals in chat, and publishing is whoever remembers first. OpenClaw helps by making the loop explicit and repeatable.",
+      "A practical setup starts with four stages: capture, draft, review, publish. Capture can be as simple as dropping ideas into a structured list. Drafting can be templated by format (how-to, teardown, opinion, announcement). Review should include one human owner and a short checklist, not ten stakeholders.",
+      "OpenClaw is useful because it can execute the repetitive parts predictably: turn notes into first drafts, queue revision reminders, verify links before publishing, and post status updates. That removes the hidden coordination cost that usually kills consistency.",
+      "The key is not full autonomy. The key is controlled delegation. Let the agent run deterministic tasks and keep editorial judgement with a human. Over time, you can add richer checks, but the first win is simply publishing on schedule with fewer dropped tasks."
+    ],
+    "keyTakeaways": [
+      "Design the content loop before adding tools.",
+      "Use OpenClaw for repetitive coordination and quality checks.",
+      "Keep final editorial judgement with a human reviewer."
+    ]
+  },
+  {
+    "slug": "agent-workflows-for-solo-operators",
+    "title": "Agent workflows for solo operators: what actually holds up",
+    "category": "Operator Systems",
+    "excerpt": "A solo operator-friendly way to use agents without creating a brittle automation maze.",
+    "readTime": "7 min",
+    "publishedAt": "2026-03-03",
+    "body": [
+      "Solo operators do not need a giant agent architecture. They need three to five dependable workflows that save real time every week. The best starting points are recurring work with clear inputs and clear outputs.",
+      "Examples: weekly reporting, meeting follow-up summaries, lead inbox triage, and competitor watchlists. These workflows are frequent, repetitive, and painful when skipped. That makes them ideal candidates for agent support.",
+      "A simple rule works well: if a task needs judgement at every sentence, keep it mostly human. If it needs consistency across many similar items, let an agent handle first pass and routing.",
+      "The most resilient stack is boring by design: one place for source data, one output format, one named reviewer. When operators add too many branches, confidence drops and maintenance cost rises fast."
+    ],
+    "keyTakeaways": [
+      "Start with 3–5 high-frequency workflows, not everything at once.",
+      "Choose tasks with clear input/output boundaries.",
+      "Name a human reviewer for every agent workflow."
+    ]
+  },
+  {
+    "slug": "practical-ai-research-system",
+    "title": "A practical AI research system for recurring market intelligence",
+    "category": "Research Ops",
+    "excerpt": "How to run repeatable research briefs that are useful to decision makers, not just interesting reads.",
+    "readTime": "9 min",
+    "publishedAt": "2026-03-05",
+    "body": [
+      "Many teams collect research but cannot operationalize it. Reports are too long, too late, and disconnected from active decisions. A practical system starts with one question per cycle: what decision should this brief improve?",
+      "From there, define a weekly brief template: signal summary, notable changes, competitive moves, and recommended actions. Keep sections fixed so trends are obvious over time.",
+      "OpenClaw can gather sources, normalize notes, draft summaries, and flag anomalies against prior weeks. Humans still verify interpretation quality and approve action recommendations before distribution.",
+      "This model produces a durable knowledge stream. Instead of random research spikes, operators get a repeatable rhythm that compounds context and improves strategic calls."
+    ],
+    "keyTakeaways": [
+      "Anchor every research cycle to a real decision.",
+      "Use a fixed brief template for comparability over time.",
+      "Let OpenClaw aggregate and summarize; keep strategic interpretation human-reviewed."
+    ]
+  },
+  {
+    "slug": "where-ai-agents-actually-save-time",
+    "title": "Where AI agents actually save time (and where they don’t)",
+    "category": "Execution",
+    "excerpt": "A realistic breakdown of high-leverage vs low-leverage agent use in operator workflows.",
+    "readTime": "6 min",
+    "publishedAt": "2026-03-07",
+    "body": [
+      "Time savings come from reducing coordination drag, not from pretending agents can do everything. The biggest gains usually happen in handoffs, reminders, status tracking, and repetitive synthesis.",
+      "By contrast, agentifying high-stakes decisions without context control often creates rework. If a workflow needs deep business nuance and changing constraints, direct human ownership is usually faster and safer.",
+      "A good heuristic: automate what is expensive to remember, not what is expensive to think. Operators burn hours on follow-ups and context switches. Agents can absorb that load when workflows are explicit.",
+      "Measure impact using cycle time, rework rate, and missed-step count. If those metrics improve, the workflow is working. If not, simplify before adding more logic."
+    ],
+    "keyTakeaways": [
+      "Automate coordination-heavy work first.",
+      "Avoid over-automating nuanced judgement workflows.",
+      "Track cycle time and rework to validate real gains."
+    ]
+  },
+  {
+    "slug": "recurring-tasks-openclaw-can-run",
+    "title": "Recurring tasks OpenClaw can run every week with minimal supervision",
+    "category": "Automation Patterns",
+    "excerpt": "Concrete recurring tasks that are low-risk to delegate and high-value to keep consistent.",
+    "readTime": "8 min",
+    "publishedAt": "2026-03-09",
+    "body": [
+      "Weekly consistency is where most operators lose margin. OpenClaw is strongest when scheduled to run fixed routines with clear success criteria and clear escalation paths.",
+      "Common weekly routines include: publishing queue checks, lead inbox triage summaries, KPI snapshots, competitor digest generation, and follow-up reminders for stalled tasks.",
+      "Each routine should define: trigger timing, required inputs, expected output artifact, and what counts as a failure requiring human intervention. This makes automation auditable instead of magical.",
+      "Start small, then add depth. A stable weekly runbook with five predictable automations beats twenty fragile scripts every time."
+    ],
+    "keyTakeaways": [
+      "Delegate recurring routines before one-off experiments.",
+      "Define trigger, inputs, outputs, and escalation for every run.",
+      "Prefer fewer reliable automations over many brittle ones."
+    ]
+  },
+  {
+    "slug": "what-to-automate-first-small-team",
+    "title": "What to automate first as a small team",
+    "category": "Small Team Ops",
+    "excerpt": "A practical prioritization model for small teams choosing their first automation targets.",
+    "readTime": "7 min",
+    "publishedAt": "2026-03-11",
+    "body": [
+      "Small teams should prioritize automations that protect focus and service quality. That usually means recurring internal operations before flashy external features.",
+      "Start by ranking tasks with three scores: frequency, error cost, and handoff friction. High scores across all three are your first automation candidates.",
+      "Good first automations are weekly reports, client update prep, FAQ routing, and knowledge retrieval from internal docs. These increase reliability without requiring risky autonomy.",
+      "After first wins, document the workflow and owner. Automation that lacks ownership quietly decays."
+    ],
+    "keyTakeaways": [
+      "Prioritize by frequency, error cost, and handoff friction.",
+      "Choose reliability wins over flashy experiments.",
+      "Document ownership so automations stay healthy."
+    ]
+  },
+  {
+    "slug": "ai-autonomy-human-review-boundary",
+    "title": "The boundary between AI autonomy and human review",
+    "category": "Governance",
+    "excerpt": "How to set clear review boundaries so agent workflows stay useful, safe, and trustworthy.",
+    "readTime": "10 min",
+    "publishedAt": "2026-03-13",
+    "body": [
+      "Healthy agent systems are explicit about authority. The question is not whether agents can do a task; the question is whether they should finalize it without review.",
+      "A practical model uses three lanes: auto-run, human-check, and human-only. Auto-run covers deterministic operational steps. Human-check covers drafted outputs and recommendations. Human-only covers legal, financial, and sensitive customer decisions.",
+      "OpenClaw fits best as an execution partner in the first two lanes. It can run predictable tasks and prepare high-quality drafts while preserving clear review gates.",
+      "Teams that define these lanes early move faster with fewer incidents. Teams that skip boundaries usually end up either over-trusting or under-using their agents."
+    ],
+    "keyTakeaways": [
+      "Use explicit autonomy lanes: auto-run, human-check, human-only.",
+      "Place OpenClaw where repeatability is high and review is clear.",
+      "Boundary design increases speed and trust at the same time."
+    ]
+  }
+]

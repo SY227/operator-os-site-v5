@@ -1,0 +1,34 @@
+cognifox-site-v5/
+├── README.md
+├── README.txt
+├── OPERATIONS.md
+├── package.json
+├── next.config.ts
+├── tsconfig.json
+├── public/
+├── content/
+│   ├── site-config.json
+│   ├── blog-posts.json
+│   ├── agent-projects.json
+│   ├── use-cases.json
+│   ├── chatbot-faq.json
+│   └── legacy/ (archived V2/V3-era content not used by active routes)
+└── src/
+    ├── app/
+    │   ├── page.tsx
+    │   ├── blog/
+    │   ├── projects/
+    │   ├── use-cases/
+    │   ├── chatbot/
+    │   ├── about/
+    │   ├── contact/
+    │   ├── privacy/
+    │   ├── terms/
+    │   ├── api/
+    │   │   ├── analytics/route.ts
+    │   │   ├── chatbot/route.ts
+    │   │   ├── contact/route.ts
+    │   │   └── newsletter/route.ts
+    │   └── legacy redirect routes
+    ├── components/
+    └── lib/

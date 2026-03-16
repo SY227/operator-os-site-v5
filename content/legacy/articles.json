@@ -1,0 +1,98 @@
+[
+  {
+    "slug": "45-minute-weekly-reset",
+    "title": "The 45-Minute Weekly Reset for Solo Operators",
+    "category": "Weekly Planning",
+    "excerpt": "A practical cadence to clear bottlenecks and plan your highest-leverage work.",
+    "readTime": "6 min",
+    "body": [
+      "Start with a hard stop on open loops: unanswered messages, unassigned tasks, and draft commitments.",
+      "Then pick your top three outcomes for the next week and map them to specific execution blocks.",
+      "End by identifying one workflow bottleneck and one process improvement for next week."
+    ],
+    "primaryCta": {
+      "label": "Run the Workflow Diagnostic",
+      "href": "/get-started"
+    }
+  },
+  {
+    "slug": "sops-you-will-reuse",
+    "title": "How to Build SOPs You\u2019ll Actually Reuse",
+    "category": "SOP Design",
+    "excerpt": "A straightforward method for writing SOPs that are clear, short, and usable.",
+    "readTime": "7 min",
+    "body": [
+      "SOPs fail when they are too long, too abstract, or detached from real tools.",
+      "Write steps at decision points, not every click. Include sample outputs and edge cases.",
+      "Review SOPs after 2-3 executions and trim anything no one actually uses."
+    ],
+    "primaryCta": {
+      "label": "Explore SOP + Prompt Pack",
+      "href": "/products/sop-prompt-pack"
+    }
+  },
+  {
+    "slug": "tool-overload-to-one-stack",
+    "title": "From Tool Overload to One Operating Stack",
+    "category": "Workflow Design",
+    "excerpt": "Use this decision framework to cut redundant apps and simplify your workflow.",
+    "readTime": "5 min",
+    "body": [
+      "List all current tools by workflow stage: capture, plan, execute, review.",
+      "For each stage, keep one primary source of truth and one optional specialist tool.",
+      "Migrate active projects first and archive legacy systems with a clear freeze date."
+    ],
+    "primaryCta": {
+      "label": "Use the Tool Stack Audit Checklist",
+      "href": "/free-tools/tool-stack-audit-checklist"
+    }
+  },
+  {
+    "slug": "ai-prompts-for-execution",
+    "title": "AI Prompts That Improve Execution, Not Just Ideas",
+    "category": "AI for Execution",
+    "excerpt": "Prompt patterns designed for planning, handoffs, and follow-through.",
+    "readTime": "8 min",
+    "body": [
+      "Use prompts to reduce ambiguity in weekly plans, handoffs, and client updates.",
+      "Design prompts around deliverables and deadlines rather than brainstorming alone.",
+      "Track which prompts improve cycle time and standardize the winners into SOPs."
+    ],
+    "primaryCta": {
+      "label": "View Complete Bundle",
+      "href": "/products/complete-operator-os-bundle"
+    }
+  },
+  {
+    "slug": "solo-operator-planning-system",
+    "title": "The Solo Operator Planning System (Capture \u2192 Execute)",
+    "category": "Productivity Systems",
+    "excerpt": "A complete operating loop for running projects without daily chaos.",
+    "readTime": "9 min",
+    "body": [
+      "Capture all incoming requests into one intake layer, not scattered inboxes.",
+      "Convert requests into a weekly plan with constraints and realistic throughput.",
+      "Review outcomes every week and evolve one small part of the system at a time."
+    ],
+    "primaryCta": {
+      "label": "Run the Workflow Diagnostic",
+      "href": "/get-started"
+    }
+  },
+  {
+    "slug": "client-delivery-playbook",
+    "title": "Client Delivery Playbook: Keep Work Moving Every Week",
+    "category": "Solo Operator Playbooks",
+    "excerpt": "A repeatable playbook for managing scope, updates, and delivery rhythm.",
+    "readTime": "7 min",
+    "body": [
+      "Define weekly client update windows and reuse one update template every cycle.",
+      "Pair each deliverable with owner, due date, and next verification checkpoint.",
+      "Escalate blockers in 24 hours and document decisions directly in project context."
+    ],
+    "primaryCta": {
+      "label": "View Playbooks",
+      "href": "/playbooks"
+    }
+  }
+]
