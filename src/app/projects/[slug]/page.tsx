@@ -45,8 +45,22 @@ export default async function ProjectDetailPage({
       <section className="mx-auto grid max-w-6xl gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-[2fr_1fr] lg:px-8">
         <article className="space-y-6">
           <div className="card">
-            <h2 className="text-xl font-semibold">Problem</h2>
+            <h2 className="text-xl font-semibold">Who this is for</h2>
+            <p className="mt-2 text-slate-700">{project.whoFor ?? "Operators running recurring, process-heavy work."}</p>
+          </div>
+
+          <div className="card">
+            <h2 className="text-xl font-semibold">Problem solved</h2>
             <p className="mt-2 text-slate-700">{project.problem}</p>
+          </div>
+
+          <div className="card">
+            <h2 className="text-xl font-semibold">Inputs required</h2>
+            <ul className="mt-3 space-y-2 text-slate-700">
+              {(project.inputsRequired ?? ["Source materials", "Workflow owner", "Review checklist"]).map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
           </div>
 
           <div className="card">
@@ -58,9 +72,20 @@ export default async function ProjectDetailPage({
             </ol>
           </div>
 
-          <div className="card">
-            <h2 className="text-xl font-semibold">Output / Result</h2>
+          <div className="card border-emerald-200 bg-emerald-50">
+            <h2 className="text-xl font-semibold">Outputs / business value</h2>
             <p className="mt-2 text-slate-700">{project.output}</p>
+            <p className="mt-3 text-sm text-slate-700">Estimated time saved: {project.estimatedTimeSaved ?? "Varies by workflow maturity"}</p>
+            <p className="mt-1 text-sm text-slate-700">Business value: {project.businessValue ?? "Faster execution and fewer dropped handoffs"}</p>
+          </div>
+
+          <div className="card">
+            <h2 className="text-xl font-semibold">What still requires human review</h2>
+            <ul className="mt-3 space-y-2 text-slate-700">
+              {project.humanReview.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
           </div>
 
           <div className="card">
@@ -93,21 +118,16 @@ export default async function ProjectDetailPage({
           </div>
 
           <div className="card">
-            <h3 className="text-lg font-semibold text-slate-900">Human review still required</h3>
-            <ul className="mt-3 space-y-2 text-sm text-slate-700">
-              {project.humanReview.map((item) => (
-                <li key={item}>• {item}</li>
-              ))}
-            </ul>
+            <h3 className="text-lg font-semibold text-slate-900">Need this implemented?</h3>
+            <p className="mt-2 text-sm text-slate-700">Get a scoped setup plan for your workflow, inputs, and review gates.</p>
+            <TrackedLink
+              href={`/contact?intent=Implementation%20help%20for%20${encodeURIComponent(project.name)}`}
+              className="mt-4 inline-block rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white"
+              eventPayload={{ projectSlug: project.slug, placement: "project-detail-implementation" }}
+            >
+              Request implementation help
+            </TrackedLink>
           </div>
-
-          <TrackedLink
-            href="/chatbot"
-            className="inline-block rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white"
-            eventPayload={{ projectSlug: project.slug, placement: "project-detail" }}
-          >
-            Ask CogniFox about this project
-          </TrackedLink>
         </aside>
       </section>
     </>

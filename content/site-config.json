@@ -2,29 +2,32 @@
   "name": "CogniFox",
   "domain": "cognifox.io",
   "baseUrl": "https://cognifox.io",
-  "tagline": "OpenClaw-powered workflows, projects, and use cases for real operators.",
-  "description": "CogniFox is a focused launch site for practical AI operations: concrete blog posts, real agent project examples, operator use cases, and a content-grounded chatbot.",
+  "tagline": "Plug-and-play AI operating systems for solo operators and lean teams.",
+  "description": "CogniFox helps teams turn messy recurring work into repeatable AI-supported systems using practical workflows, templates, and implementation support.",
   "seo": {
-    "defaultTitle": "CogniFox | Practical AI workflows for operators",
+    "defaultTitle": "CogniFox | Practical AI operating systems for operators",
     "titleTemplate": "%s | CogniFox",
-    "defaultDescription": "Explore practical AI workflows, OpenClaw-managed agent projects, and concrete use cases for operators and small teams."
+    "defaultDescription": "Practical AI workflows, tools, and proof-driven project examples for solo operators and lean teams."
   },
   "nav": [
+    { "label": "Home", "href": "/" },
+    { "label": "Start Here", "href": "/start-here" },
     { "label": "Blog", "href": "/blog" },
+    { "label": "Tools", "href": "/tools" },
     { "label": "Projects", "href": "/projects" },
     { "label": "Use Cases", "href": "/use-cases" },
-    { "label": "Chatbot", "href": "/chatbot" },
+    { "label": "Work With Us", "href": "/work-with-us" },
     { "label": "About", "href": "/about" },
     { "label": "Contact", "href": "/contact" }
   ],
   "headerCta": {
-    "label": "Ask CogniFox",
-    "href": "/chatbot"
+    "label": "Get Starter Kit",
+    "href": "/start-here"
   },
   "trustBar": [
-    "OpenClaw-powered publishing workflows",
-    "Concrete examples over AI hype",
-    "Built for solo operators and lean teams"
+    "Operator-first systems, not AI hype",
+    "Concrete workflows with explicit human review",
+    "Built for solo operators and lean execution teams"
   ],
   "home": {
     "featuredBlogSlugs": [
@@ -40,14 +43,18 @@
     "featuredUseCaseSlugs": [
       "content-publishing-ops",
       "recurring-market-research",
-      "weekly-reporting-automation",
-      "customer-faq-assistant"
+      "weekly-reporting-automation"
+    ],
+    "featuredToolSlugs": [
+      "content-engine-starter-kit",
+      "lead-triage-sop-pack",
+      "weekly-ops-prompt-kit"
     ]
   },
   "newsletter": {
-    "title": "Get practical operator workflows every week",
-    "description": "One actionable system, one concrete example, and one implementation lesson each week.",
+    "title": "Operator AI Stack Starter Kit",
+    "description": "Get the exact starter pack: 7 workflows every solo operator should systemize, plus templates and SOP checklists.",
     "placeholder": "you@business.com",
-    "buttonLabel": "Join Free"
+    "buttonLabel": "Send Starter Kit"
   }
 }

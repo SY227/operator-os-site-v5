@@ -1,7 +1,7 @@
 import path from "node:path";
 import { existsSync, readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
-import { AgentProject, BlogPost, ChatbotFaq, SiteConfig, UseCase } from "./types";
+import { AgentProject, BlogPost, ChatbotFaq, SiteConfig, ToolAsset, UseCase } from "./types";
 
 function hasProjectMarkers(dir: string) {
   const packageJsonPath = path.join(dir, "package.json");
@@ -85,6 +85,10 @@ export async function getProjects() {
 
 export async function getUseCases() {
   return loadContentFile<UseCase[]>("use-cases.json");
+}
+
+export async function getTools() {
+  return loadContentFile<ToolAsset[]>("tools.json");
 }
 
 export async function getChatbotFaq() {
