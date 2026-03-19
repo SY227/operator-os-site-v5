@@ -21,6 +21,7 @@ export type SiteConfig = {
     featuredBlogSlugs?: string[];
     featuredProjectSlugs?: string[];
     featuredUseCaseSlugs?: string[];
+    featuredToolSlugs?: string[];
   };
   newsletter: {
     title: string;
@@ -45,12 +46,16 @@ export type AgentProject = {
   slug: string;
   name: string;
   summary: string;
+  whoFor?: string;
   problem: string;
+  inputsRequired?: string[];
   workflow: string[];
   stack: string[];
   openclawRole: string[];
   humanReview: string[];
   output: string;
+  estimatedTimeSaved?: string;
+  businessValue?: string;
   lessons: string[];
 };
 
@@ -64,6 +69,19 @@ export type UseCase = {
   outcomes: string[];
   openclawRole: string;
   humanReview: string;
+};
+
+export type ToolAsset = {
+  slug: string;
+  name: string;
+  category: "Templates" | "SOPs" | "Prompt Kits" | "Workflow Packs" | "Starter Systems";
+  summary: string;
+  whoFor: string;
+  includes: string[];
+  format: string;
+  status: "Available" | "Coming soon";
+  ctaLabel: string;
+  ctaHref: string;
 };
 
 export type ChatbotFaq = {

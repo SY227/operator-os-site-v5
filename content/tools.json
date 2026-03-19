@@ -1,0 +1,66 @@
+[
+  {
+    "slug": "content-engine-starter-kit",
+    "name": "Weekly Content Engine Starter Kit",
+    "category": "Starter Systems",
+    "summary": "A ready-to-run content ops starter with weekly planning, drafting, review, and publishing checklists.",
+    "whoFor": "Solo operators and lean content teams",
+    "includes": [
+      "Weekly content pipeline SOP",
+      "Draft quality review checklist",
+      "Distribution handoff template"
+    ],
+    "format": "Notion + Google Doc templates",
+    "status": "Available",
+    "ctaLabel": "Get this kit",
+    "ctaHref": "/contact?intent=Content%20engine%20starter%20kit"
+  },
+  {
+    "slug": "lead-triage-sop-pack",
+    "name": "Lead Triage SOP Pack",
+    "category": "SOPs",
+    "summary": "A practical SOP pack for faster lead response, qualification consistency, and follow-up discipline.",
+    "whoFor": "Service businesses and small sales teams",
+    "includes": [
+      "Lead scoring rubric",
+      "Routing decision tree",
+      "SLA follow-up tracker"
+    ],
+    "format": "CSV templates + SOP docs",
+    "status": "Available",
+    "ctaLabel": "Request pack",
+    "ctaHref": "/contact?intent=Lead%20triage%20SOP%20pack"
+  },
+  {
+    "slug": "weekly-ops-prompt-kit",
+    "name": "Weekly Ops Prompt Kit",
+    "category": "Prompt Kits",
+    "summary": "Prompt set for weekly recurring operator tasks: reports, summaries, market checks, and action briefs.",
+    "whoFor": "Founders, operators, and assistants managing recurring tasks",
+    "includes": [
+      "KPI report prompts",
+      "Competitor brief prompts",
+      "Weekly action planning prompts"
+    ],
+    "format": "Prompt library (Markdown)",
+    "status": "Available",
+    "ctaLabel": "Get prompt kit",
+    "ctaHref": "/contact?intent=Weekly%20ops%20prompt%20kit"
+  },
+  {
+    "slug": "workflow-automation-template-bundle",
+    "name": "Workflow Automation Template Bundle",
+    "category": "Templates",
+    "summary": "Reusable templates for defining inputs, outputs, owners, and escalation rules for AI-supported workflows.",
+    "whoFor": "Teams building first internal AI workflows",
+    "includes": [
+      "Workflow definition template",
+      "Human review boundary template",
+      "Failure and escalation checklist"
+    ],
+    "format": "Template bundle",
+    "status": "Coming soon",
+    "ctaLabel": "Join waitlist",
+    "ctaHref": "/contact?intent=Workflow%20template%20bundle"
+  }
+]

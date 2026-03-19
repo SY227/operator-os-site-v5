@@ -11,7 +11,12 @@
       "Run link/claim checks and hand draft to human editor.",
       "Schedule approved posts and create a distribution checklist."
     ],
-    "stack": ["OpenClaw", "Next.js content JSON", "Google Docs", "Notion backlog"],
+    "stack": [
+      "OpenClaw",
+      "Next.js content JSON",
+      "Google Docs",
+      "Notion backlog"
+    ],
     "openclawRole": [
       "Runs weekly topic triage.",
       "Drafts first-pass articles.",
@@ -27,7 +32,15 @@
       "Consistency improved more from process clarity than model sophistication.",
       "A strict editorial checklist prevented quality drift.",
       "One owner for approvals reduced bottlenecks significantly."
-    ]
+    ],
+    "whoFor": "Founders and content operators shipping weekly",
+    "inputsRequired": [
+      "Topic backlog",
+      "Brand voice guide",
+      "Publishing calendar"
+    ],
+    "estimatedTimeSaved": "4-6 hours/week",
+    "businessValue": "Improves publishing consistency and reduces content bottlenecks"
   },
   {
     "slug": "competitor-research-briefing-agent",
@@ -41,7 +54,12 @@
       "Draft implications and candidate response actions.",
       "Route brief to decision owners for review and prioritization."
     ],
-    "stack": ["OpenClaw", "RSS + web sources", "Airtable", "Slack summaries"],
+    "stack": [
+      "OpenClaw",
+      "RSS + web sources",
+      "Airtable",
+      "Slack summaries"
+    ],
     "openclawRole": [
       "Collects and deduplicates source updates.",
       "Drafts concise weekly competitor brief.",
@@ -57,7 +75,15 @@
       "Template consistency matters more than breadth of sources.",
       "Human context turns signals into strategy.",
       "Trend comparisons improved confidence in prioritization."
-    ]
+    ],
+    "whoFor": "Product and strategy operators needing weekly market visibility",
+    "inputsRequired": [
+      "Tracked competitor list",
+      "Source feeds",
+      "Prior week brief"
+    ],
+    "estimatedTimeSaved": "3-5 hours/week",
+    "businessValue": "Faster strategic reactions with less manual synthesis"
   },
   {
     "slug": "lead-triage-assistant",
@@ -71,7 +97,12 @@
       "Route qualified leads to priority queue with SLA tags.",
       "Create follow-up reminders for stale or pending leads."
     ],
-    "stack": ["OpenClaw", "Form APIs", "CRM webhook", "Shared follow-up board"],
+    "stack": [
+      "OpenClaw",
+      "Form APIs",
+      "CRM webhook",
+      "Shared follow-up board"
+    ],
     "openclawRole": [
       "Applies rule-based lead scoring.",
       "Produces standardized intake summaries.",
@@ -87,7 +118,15 @@
       "Clear scoring rules prevented random triage decisions.",
       "SLA tags dramatically improved follow-up discipline.",
       "High-value lead review should always stay human-owned."
-    ]
+    ],
+    "whoFor": "Service operators handling inbound demand",
+    "inputsRequired": [
+      "Lead intake forms",
+      "Qualification rules",
+      "Response SLA"
+    ],
+    "estimatedTimeSaved": "2-4 hours/week",
+    "businessValue": "Higher lead response speed and lower pipeline leakage"
   },
   {
     "slug": "recurring-report-generator",
@@ -101,7 +140,12 @@
       "Highlight anomalies and unresolved data quality flags.",
       "Publish report draft for owner approval."
     ],
-    "stack": ["OpenClaw", "Google Sheets", "CSV exports", "Email delivery"],
+    "stack": [
+      "OpenClaw",
+      "Google Sheets",
+      "CSV exports",
+      "Email delivery"
+    ],
     "openclawRole": [
       "Aggregates weekly KPI inputs.",
       "Generates draft narrative for trend shifts.",
@@ -117,7 +161,15 @@
       "Stable metric definitions are mandatory.",
       "Automated drafts are strong, but anomaly interpretation must be human.",
       "Stakeholder trust improved with consistent report structure."
-    ]
+    ],
+    "whoFor": "Operations leads shipping recurring KPI reports",
+    "inputsRequired": [
+      "Weekly KPI exports",
+      "Metric definitions",
+      "Report audience list"
+    ],
+    "estimatedTimeSaved": "2-3 hours/reporting cycle",
+    "businessValue": "Consistent reporting cadence with clearer stakeholder communication"
   },
   {
     "slug": "knowledge-base-qa-assistant",
@@ -131,7 +183,12 @@
       "Route unresolved questions to designated owners.",
       "Log unanswered patterns for documentation updates."
     ],
-    "stack": ["OpenClaw", "Internal docs", "FAQ schema", "Support channel"],
+    "stack": [
+      "OpenClaw",
+      "Internal docs",
+      "FAQ schema",
+      "Support channel"
+    ],
     "openclawRole": [
       "Provides first-pass content-grounded answers.",
       "Surfaces source links and confidence context.",
@@ -147,6 +204,14 @@
       "Answer quality depends on documentation quality.",
       "Citations increase trust and reduce misunderstandings.",
       "Question logs are a powerful roadmap for SOP improvements."
-    ]
+    ],
+    "whoFor": "Teams with growing SOP and FAQ libraries",
+    "inputsRequired": [
+      "Approved documentation",
+      "Escalation policy",
+      "FAQ taxonomy"
+    ],
+    "estimatedTimeSaved": "3-5 hours/week",
+    "businessValue": "Reduces repeat interruptions and improves answer consistency"
   }
 ]

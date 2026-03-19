@@ -43,7 +43,7 @@ export default async function Footer() {
         </div>
 
         <div>
-          <h4 className="font-semibold text-slate-900">Newsletter</h4>
+          <h4 className="font-semibold text-slate-900">{siteConfig.newsletter.title}</h4>
           <p className="mt-3 text-sm text-slate-600">{siteConfig.newsletter.description}</p>
           <NewsletterForm
             className="mt-3 flex gap-2"
